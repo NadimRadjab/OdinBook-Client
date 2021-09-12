@@ -1,24 +1,29 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useFormState from "../../hooks/useFormState";
-
+import { Alert } from "@material-ui/lab";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
-
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import styles from "../../styles/RegisterStyles";
 import { withStyles } from "@material-ui/styles";
+import { connect } from "react-redux";
+import { register } from "../../actions/authActions";
 
 interface Props {
   classes: any;
+  register: Function;
+  isAuthenticated: boolean | null;
+  errorMsg: boolean | null;
+  error: any;
 }
-const Register: FC<Props> = ({ classes }) => {
+const Register: FC<Props> = ({ classes, register, errorMsg }) => {
   const [open, setOpen] = React.useState(false);
   const [email, setEmail] = useFormState("");
   const [password, setPassword] = useFormState("");
@@ -37,7 +42,16 @@ const Register: FC<Props> = ({ classes }) => {
   };
   const onSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
+    const user = {
+      email,
+      password,
+      firstName,
+      lastName,
+      gender: value,
+    };
+    register(user);
   };
+
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -49,6 +63,11 @@ const Register: FC<Props> = ({ classes }) => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">Register</DialogTitle>
+        {!errorMsg ? null : (
+          <Alert className={classes.alert} severity="error">
+            {errorMsg}
+          </Alert>
+        )}
         <ValidatorForm className={classes.form} onSubmit={onSubmit}>
           <DialogContent>
             <TextValidator
@@ -58,13 +77,12 @@ const Register: FC<Props> = ({ classes }) => {
               errorMessages={["First Name is not valid!"]}
               margin="dense"
               name="firstName"
-              label="First Name"
               value={firstName}
               type="text"
               fullWidth
             />
             <TextValidator
-              autoFocus
+              data-test="first-name"
               margin="dense"
               name="lastName"
               label="Last Name"
@@ -77,7 +95,6 @@ const Register: FC<Props> = ({ classes }) => {
             />
             <TextValidator
               onChange={setEmail}
-              autoFocus
               margin="dense"
               name="email"
               label="Email Address"
@@ -88,7 +105,6 @@ const Register: FC<Props> = ({ classes }) => {
               errorMessages={["this field is required!", "Email is not valid!"]}
             />
             <TextValidator
-              autoFocus
               margin="dense"
               name="password"
               label="Password"
@@ -135,5 +151,11 @@ const Register: FC<Props> = ({ classes }) => {
     </div>
   );
 };
+const mapStateToProps = (state: any): any => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error,
+});
 
-export default withStyles(styles)(Register);
+export default connect(mapStateToProps, { register })(
+  withStyles(styles)(Register)
+);

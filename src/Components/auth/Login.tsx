@@ -12,15 +12,23 @@ import { clearErros } from "../../actions/errorActions";
 import { connect } from "react-redux";
 
 interface Props {
+  props: any;
   classes: any;
   login: Function;
   error: any;
   isAuthenticated: boolean | null;
 }
-const Login: FC<Props> = ({ classes, login, error, isAuthenticated }) => {
+const Login: FC<Props> = ({
+  props,
+  classes,
+  login,
+  error,
+  isAuthenticated,
+}) => {
   const [email, setEmail] = useFormState("");
   const [password, setPassword] = useFormState("");
   const [message, setMessage] = useState(null);
+  const [msgRegister, setmsgRegister] = useState(null);
   const history = useHistory();
 
   const onSubmit = (e: React.ChangeEvent<any>) => {
@@ -34,22 +42,26 @@ const Login: FC<Props> = ({ classes, login, error, isAuthenticated }) => {
   useEffect(() => {
     if (error.id === "LOGIN_FAIL") {
       setMessage(error.msg.info.message);
+    } else if (error.id === "REGISTER_FAIL") {
+      setmsgRegister(error.msg.message);
+      clearErros();
     } else {
       setMessage(null);
     }
+
     if (isAuthenticated) {
       history.push("/");
     }
-  }, [isAuthenticated, error, login, history]);
+  }, [isAuthenticated, error, history]);
   return (
     <div className={classes.root}>
       <Paper>
         <ValidatorForm onSubmit={onSubmit} noValidate className={classes.form}>
-          {!message ? null : (
+          {error.id === "LOGIN_FAIL" ? (
             <Alert className={classes.alert} severity="error">
               {message}
             </Alert>
-          )}
+          ) : null}
           <div className={classes.inputs}>
             <TextValidator
               fullWidth
@@ -57,6 +69,7 @@ const Login: FC<Props> = ({ classes, login, error, isAuthenticated }) => {
               onChange={setEmail}
               value={email}
               name="email"
+              placeholder="Email"
               label="Email"
               type="email"
               validators={["required", "isEmail"]}
@@ -67,6 +80,7 @@ const Login: FC<Props> = ({ classes, login, error, isAuthenticated }) => {
               variant="outlined"
               name="password"
               label="Password"
+              placeholder="Password"
               onChange={setPassword}
               validators={["required"]}
               errorMessages={["Password is required"]}
@@ -79,7 +93,7 @@ const Login: FC<Props> = ({ classes, login, error, isAuthenticated }) => {
               Login
             </Button>
           </div>
-          <Register />
+          <Register {...props} errorMsg={msgRegister} />
         </ValidatorForm>
       </Paper>
     </div>

@@ -4,6 +4,8 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  REGISTER_FAIL,
+  REGISTER_SUCCESS,
   LOGOUT_SUCCESS,
 } from "./types";
 import { returnErros } from "./errorActions";
@@ -13,6 +15,13 @@ import { Dispatch } from "redux";
 interface Login {
   email: string;
   password: string;
+}
+interface Register {
+  email: string;
+  password: string;
+  lastName: string;
+  gender: string;
+  firstName: string;
 }
 
 export const loadUser = () => (dispatch: Dispatch, getState: any) => {
@@ -33,6 +42,39 @@ export const loadUser = () => (dispatch: Dispatch, getState: any) => {
       });
     });
 };
+
+export const register =
+  ({ email, firstName, password, lastName, gender }: Register) =>
+  (dispatch: Dispatch) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    const body = JSON.stringify({
+      email,
+      firstName,
+      password,
+      lastName,
+      gender,
+    });
+    axios
+      .post("http://localhost:5000/api/user/register", body, config)
+      .then((res) =>
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        })
+      )
+      .catch((err) => {
+        dispatch(
+          returnErros(err.response.data, err.response.status, "REGISTER_FAIL")
+        );
+        dispatch({
+          type: REGISTER_FAIL,
+        });
+      });
+  };
 
 export const login =
   ({ email, password }: Login) =>
