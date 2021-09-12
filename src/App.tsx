@@ -1,16 +1,26 @@
-import './App.css';
-import {Switch, Route,} from "react-router-dom";
-import Home from './Components/Home';
-import Login from './Components/auth/Login';
-  
-function App() {
+import "./App.css";
+
+import { Switch, Route } from "react-router-dom";
+import Layout from "./Components/Layout";
+import Login from "./Components/auth/Login";
+import store from "./store";
+import { Provider } from "react-redux";
+import { loadUser } from "./actions/authActions";
+import { useEffect } from "react";
+
+function App(props: any) {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
   return (
-    <div className="App">
-       <Switch>
-         <Route exact path='/login'render={()=><Login/>} />
-         <Route exact path='/' render={()=><Home/>}/>
-       </Switch>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <Switch>
+          <Route exact path="/login" render={() => <Login {...props} />} />
+          <Route exact path="/" render={() => <Layout />} />
+        </Switch>
+      </div>
+    </Provider>
   );
 }
 

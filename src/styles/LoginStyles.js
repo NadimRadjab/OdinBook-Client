@@ -34,5 +34,8 @@ const styles = createStyles({
       margin: "0.2rem",
     },
   },
+  alert: {
+    width: "80%",
+  },
 });
 export default styles;

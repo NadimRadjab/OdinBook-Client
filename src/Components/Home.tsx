@@ -1,19 +1,7 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
-import Navbar from './navigation/Navbar';
-import Sidebar from './navigation/Sidebar';
+const Home = () => {
+  return <div></div>;
+};
 
-
-
- function Home() {
-   
-
-        return (
-            <>
-            <Navbar/>
-            <Sidebar/>
-            </>
-        );
-    
-}
-export default Home
+export default Home;

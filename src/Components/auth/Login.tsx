@@ -1,24 +1,55 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { withStyles } from "@material-ui/styles";
 import useFormState from "../../hooks/useFormState";
 import styles from "../../styles/LoginStyles";
 import { Button, Paper } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Register from "./Register";
+import { useHistory } from "react-router-dom";
+import { login } from "../../actions/authActions";
+import { clearErros } from "../../actions/errorActions";
+import { connect } from "react-redux";
 
 interface Props {
   classes: any;
+  login: Function;
+  error: any;
+  isAuthenticated: boolean | null;
 }
-const Login: FC<Props> = ({ classes }) => {
+const Login: FC<Props> = ({ classes, login, error, isAuthenticated }) => {
   const [email, setEmail] = useFormState("");
   const [password, setPassword] = useFormState("");
+  const [message, setMessage] = useState(null);
+  const history = useHistory();
+
   const onSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
+    const user = {
+      email,
+      password,
+    };
+    login(user);
   };
+  useEffect(() => {
+    if (error.id === "LOGIN_FAIL") {
+      setMessage(error.msg.info.message);
+    } else {
+      setMessage(null);
+    }
+    if (isAuthenticated) {
+      history.push("/");
+    }
+  }, [isAuthenticated, error, login, history]);
   return (
     <div className={classes.root}>
       <Paper>
         <ValidatorForm onSubmit={onSubmit} noValidate className={classes.form}>
+          {!message ? null : (
+            <Alert className={classes.alert} severity="error">
+              {message}
+            </Alert>
+          )}
           <div className={classes.inputs}>
             <TextValidator
               fullWidth
@@ -54,5 +85,11 @@ const Login: FC<Props> = ({ classes }) => {
     </div>
   );
 };
+const mapStateToProps = (state: any): any => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error,
+});
 
-export default withStyles(styles)(Login);
+export default connect(mapStateToProps, { login, clearErros })(
+  withStyles(styles)(Login)
+);
