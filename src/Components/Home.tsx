@@ -1,6 +1,7 @@
 import React from 'react'
 
-import Navbar from './Navbar';
+import Navbar from './navigation/Navbar';
+import Sidebar from './navigation/Sidebar';
 
 
 
@@ -8,7 +9,10 @@ import Navbar from './Navbar';
    
 
         return (
+            <>
             <Navbar/>
+            <Sidebar/>
+            </>
         );
     
 }
