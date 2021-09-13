@@ -4,7 +4,13 @@ const styles = createStyles({
     height: "90vh",
     display: "grid",
     gridTemplateColumns: "35% 65% ",
-    // gridTemplateRows: "20% 50% 100% ",
+  },
+  card: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    margin: "1rem",
   },
 });
 export default styles;

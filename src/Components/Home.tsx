@@ -10,22 +10,29 @@ interface Props {
   allPosts: any;
   friendsPosts: any;
   classes: any;
+  loading: boolean;
 }
 
-const Home: FC<Props> = ({ getPosts, allPosts, classes }) => {
+const Home: FC<Props> = ({ getPosts, allPosts, classes, loading }) => {
   const [posts, setPosts] = useState([] as any);
   useEffect(() => {
     getPosts();
   }, [getPosts]);
-
   return (
     <div className={classes.root}>
       <Sidebar />
-      <PostCard />
+      <div className={classes.card}>
+        {allPosts === undefined
+          ? null
+          : allPosts.map((post: any) => (
+              <PostCard key={post._id} post={post} />
+            ))}
+      </div>
     </div>
   );
 };
 const mapStateToPorps = (state: any) => ({
   allPosts: state.posts.post,
+  loading: state.posts.isLoading,
 });
 export default connect(mapStateToPorps, { getPosts })(withStyles(styles)(Home));
