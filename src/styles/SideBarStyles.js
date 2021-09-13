@@ -1,8 +1,6 @@
 import { createStyles } from "@material-ui/core";
 const styles = createStyles({
   root: {
-    height: "90vh",
-    width: "22%",
     borderRight: "1px solid gray",
   },
   imgContainer: {

@@ -17,7 +17,7 @@ function App(props: any) {
       <div className="App">
         <Switch>
           <Route exact path="/login" render={() => <Login {...props} />} />
-          <Route exact path="/" render={() => <Layout />} />
+          <Route exact path="/" render={() => <Layout {...props} />} />
         </Switch>
       </div>
     </Provider>

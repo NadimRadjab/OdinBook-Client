@@ -44,7 +44,6 @@ const Login: FC<Props> = ({
       setMessage(error.msg.info.message);
     } else if (error.id === "REGISTER_FAIL") {
       setmsgRegister(error.msg.message);
-      clearErros();
     } else {
       setMessage(null);
     }
@@ -57,11 +56,11 @@ const Login: FC<Props> = ({
     <div className={classes.root}>
       <Paper>
         <ValidatorForm onSubmit={onSubmit} noValidate className={classes.form}>
-          {error.id === "LOGIN_FAIL" ? (
+          {!message ? null : (
             <Alert className={classes.alert} severity="error">
               {message}
             </Alert>
-          ) : null}
+          )}
           <div className={classes.inputs}>
             <TextValidator
               fullWidth

@@ -1,20 +1,26 @@
-import React from "react";
+import React, { FC } from "react";
 import { Switch, Route } from "react-router-dom";
 import Navbar from "./navigation/Navbar";
 import Sidebar from "./navigation/Sidebar";
 import Home from "./Home";
+import { withStyles } from "@material-ui/styles";
+import styles from "../styles/LayoutStyles";
+interface Props {
+  classes: any;
+  props: any;
+}
 
-function Layout() {
+const Layout: FC<Props> = ({ props, classes }) => {
   return (
-    <>
+    <div className={classes.root}>
       <Navbar />
-      <Sidebar />
-      <main>
+
+      <main className={classes.main}>
         <Switch>
-          <Route exact path="/" render={() => <Home />} />
+          <Route exact path="/" render={() => <Home {...props} />} />
         </Switch>
       </main>
-    </>
+    </div>
   );
-}
-export default Layout;
+};
+export default withStyles(styles)(Layout);
