@@ -12,5 +12,8 @@ const styles = createStyles({
     alignItems: "center",
     margin: "1rem",
   },
+  form: {
+    marginBottom: "auto",
+  },
 });
 export default styles;

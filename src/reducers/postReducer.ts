@@ -16,9 +16,20 @@ export default function (state = initialState, action: any) {
     case GET_POSTS:
       return {
         ...state,
-        post: action.payload,
+        posts: action.payload,
         isLoading: false,
       };
+    case ADD_POST:
+      return {
+        ...state,
+        posts: [action.payload, ...state.posts],
+      };
+    case DELETE_POST:
+      return {
+        ...state,
+        // posts: state.posts.filter((post)=>post._id!==action.payload)
+      };
+
     case POSTS_LOADING:
       return {
         isLoading: true,

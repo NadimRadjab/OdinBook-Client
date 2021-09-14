@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
+import moment from "moment";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,6 +30,7 @@ const Comment: FC<any> = ({ comment }) => {
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         </ListItemAvatar>
+
         <ListItemText
           secondary={
             <React.Fragment>
@@ -38,7 +40,7 @@ const Comment: FC<any> = ({ comment }) => {
                 className={classes.inline}
                 color="textPrimary"
               >
-                Ali Connors
+                {`${comment.author.firstName} ${comment.author.lastName}`}
               </Typography>
               {` — ${comment.text}`}
             </React.Fragment>
@@ -46,6 +48,9 @@ const Comment: FC<any> = ({ comment }) => {
         />
       </ListItem>
       <Divider variant="inset" component="li" />
+      <Typography component="span" variant="body2" color="textPrimary">
+        {moment(comment.date).fromNow()}
+      </Typography>
     </List>
   );
 };

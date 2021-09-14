@@ -12,8 +12,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import Comment from "./Comment";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-
+import DeleteIcon from "@material-ui/icons/Delete";
+import { connect } from "react-redux";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -37,14 +37,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-const PostCard: FC<any> = ({ post }) => {
+const PostCard: FC<any> = ({ user, post }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(post);
+  const fullName = `${post.author.firstName} ${post.author.lastName}`;
+  const userFullName = `${user.firstName} ${user.lastName}`;
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -55,10 +56,10 @@ const PostCard: FC<any> = ({ post }) => {
         }
         action={
           <IconButton aria-label="settings">
-            <MoreVertIcon />
+            <DeleteIcon />
           </IconButton>
         }
-        title={`${post.author.firstName} ${post.author.lastName}`}
+        title={fullName === "undefined undefined" ? userFullName : fullName}
         subheader={new Date(post.date).toUTCString().substr(0, 17)}
       />
       {/* <CardMedia
@@ -89,7 +90,7 @@ const PostCard: FC<any> = ({ post }) => {
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {post.comments.map((c: {}) => (
+          {post.comments.map((c: any) => (
             <Comment comment={c} />
           ))}
         </CardContent>
@@ -98,8 +99,7 @@ const PostCard: FC<any> = ({ post }) => {
   );
 };
 
-// const mapStateToPorps = (state: any) => ({
-//   allPosts: state.posts.post,
-// });
-// export default connect(mapStateToPorps, { getPosts })(withStyles(styles)(PostCard));
-export default PostCard;
+const mapStateToPorps = (state: any) => ({
+  user: state.auth.user,
+});
+export default connect(mapStateToPorps)(PostCard);

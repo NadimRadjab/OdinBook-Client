@@ -95,8 +95,6 @@ export const login =
         })
       )
       .catch((err) => {
-        console.log(err);
-        console.log(err);
         dispatch(
           returnErros(err.response.data, err.response.status, "LOGIN_FAIL")
         );

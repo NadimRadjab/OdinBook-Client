@@ -29,6 +29,25 @@ export const getPosts = () => (dispatch: Dispatch, getState: any) => {
       dispatch(returnErros(err.response.data, err.response.status));
     });
 };
+export const addPost = (post: any) => (dispatch: Dispatch, getState: any) => {
+  const token = {
+    headers: {
+      Authorization: getState().auth.token,
+    },
+  };
+  axios
+    .post("http://localhost:5000/api/posts", post, token)
+    .then((res) =>
+      dispatch({
+        type: ADD_POST,
+        payload: res.data,
+      })
+    )
+    .catch((err) => {
+      console.log(err);
+      //   dispatch(returnErros(err.response.data, err.response.status));
+    });
+};
 
 export const postLoading = () => {
   return {
