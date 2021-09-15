@@ -5,8 +5,20 @@ const initialState = {
   status: null,
   id: null,
 };
+interface GetAction {
+  type: "GET_ERRORS";
+  payload: {
+    msg: string;
+    status: null | number;
+    id: null | string;
+  };
+}
+interface ClearActions {
+  type: "CLEAR_ERRORS";
+}
+type Action = GetAction | ClearActions;
 
-export default function (state = initialState, action: any) {
+export default function (state = initialState, action: Action) {
   switch (action.type) {
     case GET_ERRORS:
       return {

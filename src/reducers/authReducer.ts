@@ -9,12 +9,27 @@ import {
   REGISTER_SUCCESS,
 } from "../actions/types";
 
-const initialState = {
+interface AuthState {
+  token: string | null;
+  isAuthenticated: null | boolean;
+  isLoading: boolean;
+  user: null | {
+    email: string;
+    password: string;
+    lastName: string;
+    gender: string;
+    firstName: string;
+  };
+}
+
+const initialState: AuthState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   isLoading: false,
   user: null,
 };
+
+// type Action = LoadUser | LoadedUser | LoginUser;
 export default function (state = initialState, action: any) {
   switch (action.type) {
     case USER_LOADING:
@@ -45,6 +60,7 @@ export default function (state = initialState, action: any) {
       localStorage.removeItem("token");
       return {
         ...state,
+        token: null,
         isAuthenticated: null,
         isLoading: false,
         user: null,

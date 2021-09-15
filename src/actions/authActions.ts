@@ -26,9 +26,14 @@ interface Register {
 
 export const loadUser = () => (dispatch: Dispatch, getState: any) => {
   dispatch({ type: USER_LOADING });
-
+  const config = {
+    headers: {
+      Authorization: getState().auth.token,
+    },
+  };
+  // console.log();
   axios
-    .get("http://localhost:5000/api")
+    .get("http://localhost:5000/api", config)
     .then((res) =>
       dispatch({
         type: USER_LOADED,
@@ -47,11 +52,6 @@ export const loadUser = () => (dispatch: Dispatch, getState: any) => {
 export const register =
   ({ email, firstName, password, lastName, gender }: Register) =>
   (dispatch: Dispatch) => {
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
     const body = JSON.stringify({
       email,
       firstName,
@@ -60,7 +60,7 @@ export const register =
       gender,
     });
     axios
-      .post("http://localhost:5000/api/user/register", body, config)
+      .post("http://localhost:5000/api/user/register", body)
       .then((res) =>
         dispatch({
           type: REGISTER_SUCCESS,

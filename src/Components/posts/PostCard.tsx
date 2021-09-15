@@ -11,9 +11,15 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import Comment from "./Comment";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { connect } from "react-redux";
+import EditIcon from "@material-ui/icons/Edit";
+import { useSelector, useDispatch } from "react-redux";
+import { State } from "../../reducers";
+import { deletePost } from "../../actions/postActions";
+import { useState } from "react";
+import Comment from "./Comment";
+import UpdatePost from "./UpdatePost";
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -37,15 +43,26 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-const PostCard: FC<any> = ({ user, post }) => {
+const PostCard: FC<any> = ({ post }) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [toggleUpdate, setToggleUpdate] = useState(false);
+  const dispatch = useDispatch();
+  const userState = useSelector((state: State) => state.auth.user);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const handleDelete = () => {
+    dispatch(deletePost(post._id));
+  };
+  const handleUpdate = () => {
+    setToggleUpdate(!toggleUpdate);
+  };
+
   const fullName = `${post.author.firstName} ${post.author.lastName}`;
-  const userFullName = `${user.firstName} ${user.lastName}`;
+  const userFullName =
+    userState === null ? null : `${userState.firstName} ${userState.lastName}`;
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -56,7 +73,8 @@ const PostCard: FC<any> = ({ user, post }) => {
         }
         action={
           <IconButton aria-label="settings">
-            <DeleteIcon />
+            <EditIcon onClick={handleUpdate} />
+            <DeleteIcon onClick={handleDelete} />
           </IconButton>
         }
         title={fullName === "undefined undefined" ? userFullName : fullName}
@@ -68,9 +86,17 @@ const PostCard: FC<any> = ({ user, post }) => {
         title="Paella dish"
       /> */}
       <CardContent>
-        <Typography variant="body1" component="p">
-          {post.text}
-        </Typography>
+        {!toggleUpdate ? (
+          <Typography variant="body1" component="p">
+            {post.text}
+          </Typography>
+        ) : (
+          <UpdatePost
+            handleUpdate={handleUpdate}
+            id={post._id}
+            text={post.text}
+          />
+        )}
       </CardContent>
       <CardActions>
         <IconButton aria-label="Like">
@@ -91,7 +117,7 @@ const PostCard: FC<any> = ({ user, post }) => {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           {post.comments.map((c: any) => (
-            <Comment comment={c} />
+            <Comment key={c._id} comment={c} />
           ))}
         </CardContent>
       </Collapse>
@@ -99,7 +125,4 @@ const PostCard: FC<any> = ({ user, post }) => {
   );
 };
 
-const mapStateToPorps = (state: any) => ({
-  user: state.auth.user,
-});
-export default connect(mapStateToPorps)(PostCard);
+export default PostCard;

@@ -1,23 +1,22 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { getPosts } from "../actions/postActions";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PostCard from "./posts/PostCard";
 import Sidebar from "./navigation/Sidebar";
 import styles from "../styles/HomeStyles";
 import { withStyles } from "@material-ui/styles";
 import PostForm from "./posts/PostForm";
+
 interface Props {
-  getPosts: Function;
-  allPosts: any;
-  friendsPosts: any;
   classes: any;
-  loading: boolean;
 }
 
-const Home: FC<Props> = ({ getPosts, allPosts, classes, loading }) => {
-  const [posts, setPosts] = useState([] as any);
+const Home: FC<Props> = ({ classes }) => {
+  const dispatch = useDispatch();
+  const allPosts = useSelector((state: any) => state.posts.posts);
+
   useEffect(() => {
-    getPosts();
+    dispatch(getPosts());
   }, [getPosts]);
   return (
     <div className={classes.root}>
@@ -36,8 +35,5 @@ const Home: FC<Props> = ({ getPosts, allPosts, classes, loading }) => {
     </div>
   );
 };
-const mapStateToPorps = (state: any) => ({
-  allPosts: state.posts.posts,
-  loading: state.posts.isLoading,
-});
-export default connect(mapStateToPorps, { getPosts })(withStyles(styles)(Home));
+
+export default withStyles(styles)(Home);

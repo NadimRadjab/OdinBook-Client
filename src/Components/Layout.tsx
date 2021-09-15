@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { Switch, Route } from "react-router-dom";
 import Navbar from "./navigation/Navbar";
-import Sidebar from "./navigation/Sidebar";
 import Home from "./Home";
 import { withStyles } from "@material-ui/styles";
 import styles from "../styles/LayoutStyles";

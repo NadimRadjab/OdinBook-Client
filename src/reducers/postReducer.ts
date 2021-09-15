@@ -6,7 +6,21 @@ import {
   POSTS_LOADING,
 } from "../actions/types";
 
-const initialState = {
+interface PostState {
+  posts: {
+    _id: string;
+    text: string;
+    author?: {
+      _id: string;
+      firstName: string;
+      lastName: string;
+    };
+    comments?: {}[];
+  }[];
+  isLoading: boolean;
+}
+
+const initialState: PostState = {
   posts: [],
   isLoading: false,
 };
@@ -24,10 +38,19 @@ export default function (state = initialState, action: any) {
         ...state,
         posts: [action.payload, ...state.posts],
       };
+    case UPDATE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload.id
+            ? { ...post, text: action.payload.text }
+            : post
+        ),
+      };
     case DELETE_POST:
       return {
         ...state,
-        // posts: state.posts.filter((post)=>post._id!==action.payload)
+        posts: state.posts.filter((post) => post._id !== action.payload),
       };
 
     case POSTS_LOADING:

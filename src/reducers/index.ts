@@ -2,8 +2,11 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
 import postReducer from "./postReducer";
-export default combineReducers({
+const reducers = combineReducers({
   auth: authReducer,
   error: errorReducer,
   posts: postReducer,
 });
+export default reducers;
+
+export type State = ReturnType<typeof reducers>;
