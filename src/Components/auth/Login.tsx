@@ -7,8 +7,8 @@ import { Alert } from "@material-ui/lab";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Register from "./Register";
 import { useHistory } from "react-router-dom";
-import { login } from "../../actions/authActions";
-import { clearErros } from "../../actions/errorActions";
+import { login } from "../../redux/actions/authActions";
+import { clearErros } from "../../redux/actions/errorActions";
 import { connect } from "react-redux";
 
 interface Props {

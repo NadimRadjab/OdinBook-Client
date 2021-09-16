@@ -17,3 +17,9 @@ export const ADD_POST = "ADD_POST";
 export const UPDATE_POST = "UPDATE_POST";
 export const DELETE_POST = "DELETE_POST";
 export const POSTS_LOADING = "POSTS_LOADING";
+
+///Comment Types
+export const ADD_COMMENT = "ADD_COMMENT";
+export const GET_COMMENTS = "GET_COMMENTS";
+export const DELETE_COMMENT = "DELETE_COMMENT";
+export const COMMENTS_LOADING = "COMMENTS_LOADING";

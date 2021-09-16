@@ -1,5 +1,6 @@
 import { FC, useEffect } from "react";
-import { getPosts } from "../actions/postActions";
+import { getPosts } from "../redux/actions/postActions";
+import { getComments } from "../redux/actions/commentActions";
 import { useSelector, useDispatch } from "react-redux";
 import PostCard from "./posts/PostCard";
 import Sidebar from "./navigation/Sidebar";
@@ -14,10 +15,12 @@ interface Props {
 const Home: FC<Props> = ({ classes }) => {
   const dispatch = useDispatch();
   const allPosts = useSelector((state: any) => state.posts.posts);
+  const allComments = useSelector((state: any) => state.comments.comments);
 
   useEffect(() => {
     dispatch(getPosts());
-  }, [getPosts]);
+    dispatch(getComments());
+  }, [getPosts, getComments]);
   return (
     <div className={classes.root}>
       <Sidebar />
@@ -29,7 +32,7 @@ const Home: FC<Props> = ({ classes }) => {
         {allPosts === undefined
           ? null
           : allPosts.map((post: any) => (
-              <PostCard key={post._id} post={post} />
+              <PostCard comments={allComments} post={post} />
             ))}
       </div>
     </div>

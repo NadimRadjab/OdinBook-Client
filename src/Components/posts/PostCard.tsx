@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -14,11 +14,12 @@ import { red } from "@material-ui/core/colors";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { useSelector, useDispatch } from "react-redux";
-import { State } from "../../reducers";
-import { deletePost } from "../../actions/postActions";
+import { State } from "../../redux/reducers";
+import { deletePost } from "../../redux/actions/postActions";
 import { useState } from "react";
-import Comment from "./Comment";
 import UpdatePost from "./UpdatePost";
+import AddComment from "../comment/AddComment";
+import Comment from "../comment/Comment";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,12 +44,14 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-const PostCard: FC<any> = ({ post }) => {
+const PostCard: FC<any> = ({ post, comments }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const dispatch = useDispatch();
   const userState = useSelector((state: State) => state.auth.user);
+  const isLoading = useSelector((state: any) => state.comments.isLoading);
+  const allComments = useSelector((state: any) => state.comments.comments);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -63,66 +66,78 @@ const PostCard: FC<any> = ({ post }) => {
   const fullName = `${post.author.firstName} ${post.author.lastName}`;
   const userFullName =
     userState === null ? null : `${userState.firstName} ${userState.lastName}`;
-  return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <EditIcon onClick={handleUpdate} />
-            <DeleteIcon onClick={handleDelete} />
-          </IconButton>
-        }
-        title={fullName === "undefined undefined" ? userFullName : fullName}
-        subheader={new Date(post.date).toUTCString().substr(0, 17)}
-      />
-      {/* <CardMedia
+
+  if (isLoading) {
+    return <div></div>;
+  } else {
+    return (
+      <Card className={classes.root}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe" className={classes.avatar}>
+              R
+            </Avatar>
+          }
+          action={
+            <IconButton aria-label="settings">
+              <EditIcon onClick={handleUpdate} />
+              <DeleteIcon onClick={handleDelete} />
+            </IconButton>
+          }
+          title={fullName === "undefined undefined" ? userFullName : fullName}
+          subheader={new Date(post.date).toUTCString().substr(0, 17)}
+        />
+        {/* <CardMedia
         className={classes.media}
         image="/static/images/cards/paella.jpg"
         title="Paella dish"
       /> */}
-      <CardContent>
-        {!toggleUpdate ? (
-          <Typography variant="body1" component="p">
-            {post.text}
-          </Typography>
-        ) : (
-          <UpdatePost
-            handleUpdate={handleUpdate}
-            id={post._id}
-            text={post.text}
-          />
-        )}
-      </CardContent>
-      <CardActions>
-        <IconButton aria-label="Like">
-          <ThumbUpAltIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <Typography>Comment</Typography>
-        </IconButton>
-      </CardActions>
-
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {post.comments.map((c: any) => (
-            <Comment key={c._id} comment={c} />
-          ))}
+          {!toggleUpdate ? (
+            <Typography variant="body1" component="p">
+              {post.text}
+            </Typography>
+          ) : (
+            <UpdatePost
+              handleUpdate={handleUpdate}
+              id={post._id}
+              text={post.text}
+            />
+          )}
         </CardContent>
-      </Collapse>
-    </Card>
-  );
+        <CardActions>
+          <IconButton aria-label="Like">
+            <ThumbUpAltIcon />
+          </IconButton>
+          <IconButton
+            className={clsx(classes.expand, {
+              expanded,
+            })}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <Typography>Comment</Typography>
+          </IconButton>
+        </CardActions>
+
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <AddComment id={post._id} />
+          <CardContent>
+            {allComments
+              .filter((comment: any) => comment.post === post._id)
+              .map((c: any) => {
+                return <Comment key={c._id} comment={c} postId={post._id} />;
+              })}
+
+            {/* {allComments.map((comment: any) => (
+              <Comment key={comment._id} comment={comment} postId={post._id} />
+            ))} */}
+          </CardContent>
+        </Collapse>
+      </Card>
+    );
+  }
 };
 
 export default PostCard;

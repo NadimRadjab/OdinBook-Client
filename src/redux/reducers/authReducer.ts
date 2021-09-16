@@ -29,7 +29,6 @@ const initialState: AuthState = {
   user: null,
 };
 
-// type Action = LoadUser | LoadedUser | LoginUser;
 export default function (state = initialState, action: any) {
   switch (action.type) {
     case USER_LOADING:

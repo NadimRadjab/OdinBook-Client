@@ -37,7 +37,7 @@ export const getPosts = () => (dispatch: Dispatch, getState: any) => {
       })
     )
     .catch((err) => {
-      dispatch(returnErros(err.response.data, err.response.status));
+      // dispatch(returnErros(err.response.data, err.response.status));
     });
 };
 export const addPost = (post: Post) => (dispatch: Dispatch, getState: any) => {

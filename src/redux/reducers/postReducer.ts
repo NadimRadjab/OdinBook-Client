@@ -15,7 +15,12 @@ interface PostState {
       firstName: string;
       lastName: string;
     };
-    comments?: {}[];
+    comments: {
+      _id: string;
+      text: string;
+      author: string;
+      likes: number;
+    }[];
   }[];
   isLoading: boolean;
 }

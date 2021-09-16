@@ -6,23 +6,25 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import useFormState from "../../hooks/useFormState";
-import { connect } from "react-redux";
-import { addPost } from "../../redux/actions/postActions";
+import { addComment } from "../../redux/actions/commentActions";
+import { useDispatch } from "react-redux";
+
 const useStyles = makeStyles({
   root: {
     width: 550,
   },
 });
-const PostForm: FC<any> = ({ addPost }) => {
+const AddComment: FC<any> = ({ id }) => {
   const classes = useStyles();
   const [text, setText, resetText] = useFormState("");
+  const dispatch = useDispatch();
 
   const onSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
-    const newText = {
+    const newComment = {
       text,
     };
-    addPost(newText);
+    dispatch(addComment(id, newComment));
     resetText();
   };
   return (
@@ -37,7 +39,7 @@ const PostForm: FC<any> = ({ addPost }) => {
             type="text"
             validators={["required"]}
             errorMessages={["Text is required"]}
-            label={`Whats's on your mind today?`}
+            label={`Add a comment `}
           />
         </CardContent>
 
@@ -45,16 +47,10 @@ const PostForm: FC<any> = ({ addPost }) => {
           <Button type="submit" size="small" color="primary">
             Add
           </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
         </CardActions>
       </ValidatorForm>
     </Card>
   );
 };
-const mapStateToProps = (state: any) => ({
-  allPosts: state.posts.posts,
-});
 
-export default connect(mapStateToProps, { addPost })(PostForm);
+export default AddComment;

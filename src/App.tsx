@@ -3,9 +3,9 @@ import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
 import Login from "./Components/auth/Login";
-import store from "./store";
+import store from "./redux/store";
 import { Provider } from "react-redux";
-import { loadUser } from "./actions/authActions";
+import { loadUser } from "./redux/actions/authActions";
 import { useEffect } from "react";
 
 function App(props: any) {
