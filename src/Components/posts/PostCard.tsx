@@ -9,11 +9,14 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
+import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
 import DeleteIcon from "@material-ui/icons/Delete";
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import EditIcon from "@material-ui/icons/Edit";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { useSelector, useDispatch } from "react-redux";
 import {
   deletePost,
@@ -25,6 +28,7 @@ import UpdatePost from "./UpdatePost";
 import AddComment from "../comment/AddComment";
 import Comment from "../comment/Comment";
 import { State } from "../../redux/reducers";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,8 +40,11 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 0,
       paddingTop: "56.25%", // 16:9
     },
+    like: {
+      display: "flex",
+      justifyContent: "space-evenly",
+    },
     expand: {
-      transform: "rotate(0deg)",
       marginLeft: "auto",
       transition: theme.transitions.create("transform", {
         duration: theme.transitions.duration.shortest,
@@ -79,8 +86,21 @@ const PostCard: FC<any> = ({ post }) => {
     (like: { author: string }) => like.author === user._id
   );
   const likesCount = post.likes.length;
+  let likes;
+  if (!likesCount) {
+    <div></div>;
+  } else if (likesCount === 1) {
+    likes = `${likesCount} like`;
+  } else {
+    likes = `${likesCount} likes`;
+  }
 
-  if (isLoading) return <div></div>;
+  if (isLoading)
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <Card className={classes.root}>
@@ -91,19 +111,19 @@ const PostCard: FC<any> = ({ post }) => {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <EditIcon onClick={handleUpdate} />
-            <DeleteIcon onClick={handleDelete} />
-          </IconButton>
+          <div>
+            <IconButton>
+              <EditIcon onClick={handleUpdate} />
+            </IconButton>
+            <IconButton aria-label="settings">
+              <DeleteIcon onClick={handleDelete} />
+            </IconButton>
+          </div>
         }
         title={fullName}
         subheader={new Date(post.date).toUTCString().substr(0, 17)}
       />
-      {/* <CardMedia
-        className={classes.media}
-        image="/static/images/cards/paella.jpg"
-        title="Paella dish"
-      /> */}
+
       <CardContent>
         {!toggleUpdate ? (
           <Typography variant="body1" component="p">
@@ -117,7 +137,7 @@ const PostCard: FC<any> = ({ post }) => {
           />
         )}
       </CardContent>
-      <CardActions>
+      <CardActions className={classes.like}>
         <IconButton aria-label="Like">
           {isLiked ? (
             <ThumbUpAltIcon color="primary" onClick={handleUnlike} />
@@ -125,7 +145,7 @@ const PostCard: FC<any> = ({ post }) => {
             <ThumbUpAltOutlinedIcon onClick={handleLike} />
           )}
         </IconButton>
-        {likesCount === 1 ? `${likesCount} like` : ` ${likesCount} likes`}
+        {likes}
         <IconButton
           className={clsx(classes.expand, {
             expanded,
@@ -134,12 +154,16 @@ const PostCard: FC<any> = ({ post }) => {
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <Typography>Comment</Typography>
+          <Badge badgeContent={post.comments.length} color="primary">
+            <QuestionAnswerIcon />
+          </Badge>
         </IconButton>
       </CardActions>
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Divider />
         <AddComment id={post._id} />
+        <Divider />
         <CardContent>
           {allComments
             .filter((comment: any) => comment.post === post._id)

@@ -54,22 +54,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//   <CssBaseline />
-//   <Toolbar>
-//       <Typography variant="h6" noWrap className={classes.title}>
-//         Persistent drawer
-//       </Typography>
-//       <IconButton
-//         color="inherit"
-//         aria-label="open drawer"
-//         edge="end"
-//         onClick={handleDrawerOpen}
-//         className={clsx(open && classes.hide)}
-//       >
-//         <MenuIcon />
-//       </IconButton>
-//     </Toolbar>
-
 function Navbar() {
   const classes = useStyles();
   const theme = useTheme();

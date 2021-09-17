@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { createStyles, Theme, makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -19,15 +19,27 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
       display: "flex",
       flexDirection: "column",
+      "& span": {
+        alignSelf: "flex-end",
+        marginBottom: "0.2rem",
+      },
     },
     inline: {
       display: "inline",
     },
+    items: {
+      display: "flex",
+      margin: "0.3rem",
+      flexDirection: "column",
+      "& p": {
+        marginTop: "0.3rem",
+      },
+    },
     delete: {
       alignSelf: "flex-end",
-      // position: "absolute",
-      // margin: "1rem",
-      // right: 0,
+      "&:hover": {
+        cursor: "pointer",
+      },
     },
   })
 );
@@ -35,9 +47,11 @@ const useStyles = makeStyles((theme: Theme) =>
 const Comment: FC<any> = ({ comment, postId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [checked, setChecked] = React.useState(true);
 
   const handleDelete = () => {
     dispatch(deleteComment(postId, comment._id));
+    setChecked(false);
   };
   return (
     <List className={classes.root}>
@@ -49,24 +63,27 @@ const Comment: FC<any> = ({ comment, postId }) => {
 
         <ListItemText
           secondary={
-            <React.Fragment>
+            <div className={classes.items}>
               <Typography
-                component="span"
+                component="p"
                 variant="body2"
                 className={classes.inline}
                 color="textPrimary"
               >
                 {`${comment.author.firstName} ${comment.author.lastName}`}
               </Typography>
-              {` — ${comment.text}`}
-            </React.Fragment>
+              <Typography variant="body2" color="textPrimary">
+                {comment.text}
+              </Typography>
+            </div>
           }
         />
       </ListItem>
-      <Divider variant="inset" component="li" />
+
       <Typography component="span" variant="body2" color="textPrimary">
         {moment(comment.date).fromNow()}
       </Typography>
+      <Divider variant="inset" />
     </List>
   );
 };

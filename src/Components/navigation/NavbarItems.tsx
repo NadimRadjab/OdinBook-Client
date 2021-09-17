@@ -13,6 +13,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import ChatIcon from "@material-ui/icons/Chat";
 import FriendsInvites from "./FriendsInvites";
+import { logout } from "../../redux/actions/authActions";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -107,6 +109,12 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
   const menuId = "primary-search-account-menu";
 
   const mobileMenuId = "primary-search-account-menu-mobile";
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -146,7 +154,7 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>profile</p>
       </MenuItem>
     </Menu>
   );
@@ -179,7 +187,7 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={handleLogout}
               color="inherit"
             >
               <AccountCircle />
