@@ -7,6 +7,8 @@ import {
   DELETE_POST,
   UPDATE_POST,
   ADD_POST,
+  LIKE_POST,
+  UNLIKE_POST,
 } from "./types";
 
 interface Post {
@@ -29,7 +31,7 @@ export const getPosts = () => (dispatch: Dispatch, getState: any) => {
     },
   };
   axios
-    .get("http://localhost:5000/api/posts", token)
+    .get(`${process.env.REACT_APP_URL}posts`, token)
     .then((res) =>
       dispatch({
         type: GET_POSTS,
@@ -47,7 +49,7 @@ export const addPost = (post: Post) => (dispatch: Dispatch, getState: any) => {
     },
   };
   axios
-    .post("http://localhost:5000/api/posts", post, token)
+    .post(`${process.env.REACT_APP_URL}posts`, post, token)
     .then((res) =>
       dispatch({
         type: ADD_POST,
@@ -66,7 +68,7 @@ export const updatePost =
       },
     };
     axios
-      .post(`http://localhost:5000/api/posts/${id}`, text, token)
+      .post(`${process.env.REACT_APP_URL}posts/${id}`, text, token)
       .then((res) =>
         dispatch({
           type: UPDATE_POST,
@@ -85,11 +87,48 @@ export const deletePost =
       },
     };
     axios
-      .delete(`http://localhost:5000/api/posts/${id}`, token)
+      .delete(`${process.env.REACT_APP_URL}posts/${id}`, token)
       .then((res) =>
         dispatch({
           type: DELETE_POST,
           payload: id,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+      });
+  };
+export const likePost = (id: string) => (dispatch: Dispatch, getState: any) => {
+  const token = {
+    headers: {
+      Authorization: getState().auth.token,
+    },
+  };
+  axios
+    .post(`${process.env.REACT_APP_URL}posts/${id}/like`, id, token)
+    .then((res) =>
+      dispatch({
+        type: LIKE_POST,
+        payload: { like: res.data, id },
+      })
+    )
+    .catch((err) => {
+      dispatch(returnErros(err.response.data, err.response.status));
+    });
+};
+export const unlikePost =
+  (id: string) => (dispatch: Dispatch, getState: any) => {
+    const token = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .post(`${process.env.REACT_APP_URL}posts/${id}/like`, id, token)
+      .then((res) =>
+        dispatch({
+          type: UNLIKE_POST,
+          payload: { likeId: res.data, id },
         })
       )
       .catch((err) => {

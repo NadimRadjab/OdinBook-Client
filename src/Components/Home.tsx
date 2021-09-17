@@ -7,6 +7,7 @@ import Sidebar from "./navigation/Sidebar";
 import styles from "../styles/HomeStyles";
 import { withStyles } from "@material-ui/styles";
 import PostForm from "./posts/PostForm";
+import { State } from "../redux/reducers";
 
 interface Props {
   classes: any;
@@ -15,12 +16,13 @@ interface Props {
 const Home: FC<Props> = ({ classes }) => {
   const dispatch = useDispatch();
   const allPosts = useSelector((state: any) => state.posts.posts);
-  const allComments = useSelector((state: any) => state.comments.comments);
+  const userLoading = useSelector((state: State) => state.auth.isLoading);
 
   useEffect(() => {
     dispatch(getPosts());
     dispatch(getComments());
   }, [getPosts, getComments]);
+  if (userLoading) return <div></div>;
   return (
     <div className={classes.root}>
       <Sidebar />
@@ -32,7 +34,7 @@ const Home: FC<Props> = ({ classes }) => {
         {allPosts === undefined
           ? null
           : allPosts.map((post: any) => (
-              <PostCard comments={allComments} post={post} />
+              <PostCard key={post._id} post={post} />
             ))}
       </div>
     </div>

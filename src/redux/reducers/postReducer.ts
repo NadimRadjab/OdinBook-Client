@@ -4,22 +4,29 @@ import {
   UPDATE_POST,
   ADD_POST,
   POSTS_LOADING,
+  LIKE_POST,
+  UNLIKE_POST,
 } from "../actions/types";
 
 interface PostState {
   posts: {
     _id: string;
     text: string;
-    author?: {
+    author: {
       _id: string;
       firstName: string;
       lastName: string;
     };
+    likes: {
+      _id: string;
+      author: string;
+      post: string;
+    }[];
+
     comments: {
       _id: string;
       text: string;
       author: string;
-      likes: number;
     }[];
   }[];
   isLoading: boolean;
@@ -57,6 +64,33 @@ export default function (state = initialState, action: any) {
         ...state,
         posts: state.posts.filter((post) => post._id !== action.payload),
       };
+    case LIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if (post._id === action.payload.id) {
+            let newArr = [];
+            newArr.push(...post.likes);
+            newArr.push(action.payload.like);
+            return { ...post, likes: newArr };
+          } else return post;
+        }),
+      };
+    case UNLIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if (post._id === action.payload.id) {
+            let newArr = [];
+            newArr.push(...post.likes);
+            const filterLike = newArr.filter(
+              (like) => like._id !== action.payload.likeId
+            );
+            console.log(action.payload.likeId);
+            return { ...post, likes: filterLike };
+          } else return post;
+        }),
+      };
 
     case POSTS_LOADING:
       return {
@@ -66,3 +100,4 @@ export default function (state = initialState, action: any) {
       return state;
   }
 }
+// { ...post, likes: likes.push(action.payload.like) }
