@@ -86,7 +86,6 @@ export default function (state = initialState, action: any) {
             const filterLike = newArr.filter(
               (like) => like._id !== action.payload.likeId
             );
-            console.log(action.payload.likeId);
             return { ...post, likes: filterLike };
           } else return post;
         }),
@@ -100,4 +99,3 @@ export default function (state = initialState, action: any) {
       return state;
   }
 }
-// { ...post, likes: likes.push(action.payload.like) }

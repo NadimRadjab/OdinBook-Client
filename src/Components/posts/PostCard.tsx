@@ -60,8 +60,10 @@ const PostCard: FC<any> = ({ post }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [toggleUpdate, setToggleUpdate] = useState(false);
+  const [value, setValue] = useState("");
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.comments.isLoading);
+
   const allComments = useSelector((state: any) => state.comments.comments);
   const user = useSelector((state: State) => state.auth.user);
 
@@ -85,6 +87,7 @@ const PostCard: FC<any> = ({ post }) => {
   const isLiked = post.likes.some(
     (like: { author: string }) => like.author === user._id
   );
+
   const likesCount = post.likes.length;
   let likes;
   if (!likesCount) {

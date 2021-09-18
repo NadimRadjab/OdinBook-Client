@@ -9,6 +9,8 @@ import {
   ADD_POST,
   LIKE_POST,
   UNLIKE_POST,
+  LIKE_USER_POST,
+  UNLIKE_USER_POST,
 } from "./types";
 
 interface Post {
@@ -39,7 +41,7 @@ export const getPosts = () => (dispatch: Dispatch, getState: any) => {
       })
     )
     .catch((err) => {
-      // dispatch(returnErros(err.response.data, err.response.status));
+      dispatch(returnErros(err.response.data, err.response.status));
     });
 };
 export const addPost = (post: Post) => (dispatch: Dispatch, getState: any) => {
@@ -106,12 +108,16 @@ export const likePost = (id: string) => (dispatch: Dispatch, getState: any) => {
   };
   axios
     .post(`${process.env.REACT_APP_URL}posts/${id}/like`, id, token)
-    .then((res) =>
+    .then((res) => [
       dispatch({
         type: LIKE_POST,
         payload: { like: res.data, id },
-      })
-    )
+      }),
+      dispatch({
+        type: LIKE_USER_POST,
+        payload: { like: res.data, id },
+      }),
+    ])
     .catch((err) => {
       dispatch(returnErros(err.response.data, err.response.status));
     });
@@ -125,12 +131,16 @@ export const unlikePost =
     };
     axios
       .post(`${process.env.REACT_APP_URL}posts/${id}/like`, id, token)
-      .then((res) =>
+      .then((res) => [
         dispatch({
           type: UNLIKE_POST,
           payload: { likeId: res.data, id },
-        })
-      )
+        }),
+        dispatch({
+          type: UNLIKE_USER_POST,
+          payload: { likeId: res.data, id },
+        }),
+      ])
       .catch((err) => {
         dispatch(returnErros(err.response.data, err.response.status));
       });

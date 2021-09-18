@@ -7,7 +7,6 @@ import Sidebar from "./navigation/Sidebar";
 import styles from "../styles/HomeStyles";
 import { withStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
 import PostForm from "./posts/PostForm";
 import { State } from "../redux/reducers";
 
@@ -23,13 +22,15 @@ const Home: FC<Props> = ({ classes }) => {
   useEffect(() => {
     dispatch(getPosts());
     dispatch(getComments());
-  }, [getPosts, getComments]);
+  }, [dispatch]);
+
   if (userLoading)
     return (
       <div>
         <CircularProgress />
       </div>
     );
+
   return (
     <div className={classes.root}>
       <Sidebar />

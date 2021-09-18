@@ -1,13 +1,13 @@
 import React, { FC } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import Navbar from "./navigation/Navbar";
 import Home from "./Home";
+import ViewUser from "./users/ViewUser";
 import { withStyles } from "@material-ui/styles";
 import styles from "../styles/LayoutStyles";
 import { Redirect } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-
+import { useSelector } from "react-redux";
+import SearchUsers from "./users/SearchUsers";
 interface Props {
   classes: any;
   props: any;
@@ -15,7 +15,7 @@ interface Props {
 
 const Layout: FC<Props> = ({ props, classes }) => {
   const isToken = !!localStorage.getItem("token");
-  const dispatch = useDispatch();
+  const location = useLocation();
   const userLoading = useSelector((state: any) => state.auth.isLoading);
 
   if (!isToken) {
@@ -30,6 +30,8 @@ const Layout: FC<Props> = ({ props, classes }) => {
       <main className={classes.main}>
         <Switch>
           <Route exact path="/" render={() => <Home {...props} />} />
+          <Route exact path="/s" render={() => <SearchUsers {...props} />} />
+          <Route exact path="/:id" render={() => <ViewUser {...props} />} />
         </Switch>
       </main>
     </div>

@@ -15,6 +15,8 @@ import ChatIcon from "@material-ui/icons/Chat";
 import FriendsInvites from "./FriendsInvites";
 import { logout } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import { getUsers } from "../../redux/actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -85,10 +87,19 @@ interface Props {
 const NavbarItems: FC<Props> = ({ openDrawer }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [name, setName] = React.useState("");
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const handleChange = (e: React.ChangeEvent<any>) => {
+    setName(e.target.value);
+  };
+  const handleSubmit = (e: React.ChangeEvent<any>) => {
+    e.preventDefault();
+    history.push(`/s?name=${name}`);
+    dispatch(getUsers(name));
+  };
   const handleProfileMenuOpen = (event: React.ChangeEvent<any>): void => {
     setAnchorEl(event.currentTarget);
   };
@@ -110,9 +121,13 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const handleLogout = () => {
     dispatch(logout());
+    history.push("/login");
+  };
+  const handleHome = () => {
+    history.push("/");
   };
 
   const renderMobileMenu = (
@@ -163,21 +178,32 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          <Typography
+            onClick={handleHome}
+            className={classes.title}
+            variant="h6"
+            noWrap
+          >
             Odin Book
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
+            <form onSubmit={handleSubmit}>
+              <InputBase
+                placeholder="Search…"
+                value={name}
+                name="name"
+                onChange={handleChange}
+                type="text"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
+            </form>
           </div>
 
           <div className={classes.grow} />

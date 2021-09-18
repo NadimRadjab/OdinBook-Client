@@ -25,3 +25,11 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const GET_COMMENTS = "GET_COMMENTS";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const COMMENTS_LOADING = "COMMENTS_LOADING";
+
+///Users Types
+export const LOAD_USERS = "LOAD_USERS";
+export const GET_USERS = "GET_USERS";
+export const GET_USER = "GET_USER";
+export const LIKE_USER_POST = "LIKE_USER_POST";
+export const UNLIKE_USER_POST = "UNLIKE_USER_POST";
+export const MAKE_OBJECT = "MAKE_OBJECT";
