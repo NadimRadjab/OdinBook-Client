@@ -60,7 +60,6 @@ const PostCard: FC<any> = ({ post }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [toggleUpdate, setToggleUpdate] = useState(false);
-  const [value, setValue] = useState("");
   const dispatch = useDispatch();
   const isLoading = useSelector((state: any) => state.comments.isLoading);
 
@@ -82,6 +81,7 @@ const PostCard: FC<any> = ({ post }) => {
   const handleUpdate = () => {
     setToggleUpdate(!toggleUpdate);
   };
+  const isAuthor = post.author._id === user._id;
 
   const fullName = `${post.author.firstName} ${post.author.lastName}`;
   const isLiked = post.likes.some(
@@ -114,14 +114,16 @@ const PostCard: FC<any> = ({ post }) => {
           </Avatar>
         }
         action={
-          <div>
-            <IconButton>
-              <EditIcon onClick={handleUpdate} />
-            </IconButton>
-            <IconButton aria-label="settings">
-              <DeleteIcon onClick={handleDelete} />
-            </IconButton>
-          </div>
+          !isAuthor ? null : (
+            <div>
+              <IconButton>
+                <EditIcon onClick={handleUpdate} />
+              </IconButton>
+              <IconButton aria-label="settings">
+                <DeleteIcon onClick={handleDelete} />
+              </IconButton>
+            </div>
+          )
         }
         title={fullName}
         subheader={new Date(post.date).toUTCString().substr(0, 17)}

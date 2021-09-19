@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Navbar from "./navigation/Navbar";
 import Home from "./Home";
 import ViewUser from "./users/ViewUser";
@@ -15,7 +15,6 @@ interface Props {
 
 const Layout: FC<Props> = ({ props, classes }) => {
   const isToken = !!localStorage.getItem("token");
-  const location = useLocation();
   const userLoading = useSelector((state: any) => state.auth.isLoading);
 
   if (!isToken) {

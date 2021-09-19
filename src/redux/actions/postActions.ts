@@ -119,7 +119,8 @@ export const likePost = (id: string) => (dispatch: Dispatch, getState: any) => {
       }),
     ])
     .catch((err) => {
-      dispatch(returnErros(err.response.data, err.response.status));
+      // dispatch(returnErros(err.response.data, err.response.status));
+      console.log(err);
     });
 };
 export const unlikePost =
@@ -142,7 +143,8 @@ export const unlikePost =
         }),
       ])
       .catch((err) => {
-        dispatch(returnErros(err.response.data, err.response.status));
+        console.log(err);
+        // dispatch(returnErros(err.response.data, err.response.status));
       });
   };
 

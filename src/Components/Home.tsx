@@ -30,7 +30,6 @@ const Home: FC<Props> = ({ classes }) => {
         <CircularProgress />
       </div>
     );
-
   return (
     <div className={classes.root}>
       <Sidebar />

@@ -7,12 +7,18 @@ const styles = createStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    "&& h5": {
+      marginTop: "1rem",
+    },
     "&& a": {
-      margin: "0.2rem",
+      marginBottom: "0.5rem",
+    },
+    "&& button": {
+      marginBottom: "0.4rem",
     },
   },
   profilePic: {
-    margin: "1rem",
+    margin: "1.5rem",
     width: "170px",
     height: "170px",
   },
@@ -20,11 +26,18 @@ const styles = createStyles({
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
   },
-  friendPic: {
-    margin: "0.3rem",
-    width: "70px",
-    height: "70px",
+  friendsImg: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    "&& img": {
+      margin: "0.2rem",
+      width: "70px",
+      height: "70px",
+    },
   },
+
   viewFriends: {
     display: "flex",
     justifyContent: "center",

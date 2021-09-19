@@ -1,4 +1,4 @@
-////User Types.
+////Auth Types.
 export const USER_LOADING = "USER_LOADING ";
 export const USER_LOADED = "USER_LOADED";
 export const AUTH_ERROR = "AUTH_ERROR ";
@@ -30,6 +30,8 @@ export const COMMENTS_LOADING = "COMMENTS_LOADING";
 export const LOAD_USERS = "LOAD_USERS";
 export const GET_USERS = "GET_USERS";
 export const GET_USER = "GET_USER";
+export const GET_USER_POSTS = "GET_USER_POSTS";
+export const LOAD_USER_POSTS = "LOAD_USER_POSTS";
 export const LIKE_USER_POST = "LIKE_USER_POST";
 export const UNLIKE_USER_POST = "UNLIKE_USER_POST";
-export const MAKE_OBJECT = "MAKE_OBJECT";
+export const UPDATE_MAIN_USER_IMAGE = "UPDATE_MAIN_USER_IMAGE";

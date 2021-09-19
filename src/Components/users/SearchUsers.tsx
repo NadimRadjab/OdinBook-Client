@@ -44,7 +44,9 @@ interface Profile {
 const SearchUsers: React.FC = () => {
   const classes = useStyles();
   const profiles = useSelector((state: State) => state.users.searchedUsers);
-  const profilesLoading = useSelector((state: State) => state.users.isLoading);
+  const profilesLoading = useSelector(
+    (state: State) => state.users.isUserLoading
+  );
   const history = useHistory();
   const viewProfile = (id: string) => {
     history.push(`/${id}`);
