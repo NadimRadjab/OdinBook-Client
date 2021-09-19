@@ -76,6 +76,7 @@ const Register: FC<Props> = ({ classes, register, errorMsg }) => {
               validators={["required"]}
               errorMessages={["First Name is not valid!"]}
               margin="dense"
+              label="firstName"
               name="firstName"
               value={firstName}
               type="text"

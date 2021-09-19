@@ -31,9 +31,9 @@ export const loadUser = () => (dispatch: Dispatch, getState: any) => {
       Authorization: getState().auth.token,
     },
   };
-  // console.log();
+
   axios
-    .get("http://localhost:5000/api", config)
+    .get(`${process.env.REACT_APP_URL}`, config)
     .then((res) =>
       dispatch({
         type: USER_LOADED,
@@ -52,15 +52,16 @@ export const loadUser = () => (dispatch: Dispatch, getState: any) => {
 export const register =
   ({ email, firstName, password, lastName, gender }: Register) =>
   (dispatch: Dispatch) => {
-    const body = JSON.stringify({
+    const body = {
       email,
       firstName,
       password,
       lastName,
       gender,
-    });
+    };
+    console.log(body);
     axios
-      .post("http://localhost:5000/api/user/register", body)
+      .post(`${process.env.REACT_APP_URL}user/register`, body)
       .then((res) =>
         dispatch({
           type: REGISTER_SUCCESS,

@@ -6,6 +6,7 @@ import {
   LOAD_USERS,
   GET_USER,
   GET_USER_POSTS,
+  USER_LOADING,
   LOAD_USER_POSTS,
   UPDATE_MAIN_USER_IMAGE,
 } from "./types";

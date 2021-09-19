@@ -25,8 +25,8 @@ import {
 } from "../../redux/actions/postActions";
 import { useState } from "react";
 import UpdatePost from "./UpdatePost";
-import AddComment from "../comment/AddComment";
-import Comment from "../comment/Comment";
+import AddComment from "../comments/AddComment";
+import Comment from "../comments/Comment";
 import { State } from "../../redux/reducers";
 import { Divider } from "@material-ui/core";
 

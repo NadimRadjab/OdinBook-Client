@@ -12,7 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import ChatIcon from "@material-ui/icons/Chat";
-import FriendsInvites from "./FriendsInvites";
+import FriendsInvites from "../main-user/FriendsInvites";
 import { logout } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";

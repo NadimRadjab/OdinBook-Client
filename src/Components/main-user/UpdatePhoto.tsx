@@ -22,7 +22,7 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
   const user = useSelector((state: State) => state.auth.user);
 
   useEffect(() => {
-    setImg(user.image.url);
+    setImg(user.image[0].profile);
   }, []);
   const handleSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
@@ -47,10 +47,11 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
   const handleClose = () => {
     setOpen(false);
   };
+  console.log(img);
   return (
     <div className={classes.root}>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open dialog
+        Edit Photo
       </Button>
       <Dialog
         className={classes.dialog}
@@ -74,7 +75,7 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
             <img src={img} alt="edit-photo-pic" />
 
             <Button startIcon={<CloudUploadIcon />} color="primary">
-              <label htmlFor="image">Edit Photo</label>
+              <label htmlFor="image">Upload Photo</label>
             </Button>
             <TextField
               name="file"

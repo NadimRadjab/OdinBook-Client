@@ -3,7 +3,7 @@ import { getPosts } from "../redux/actions/postActions";
 import { getComments } from "../redux/actions/commentActions";
 import { useSelector, useDispatch } from "react-redux";
 import PostCard from "./posts/PostCard";
-import Sidebar from "./navigation/Sidebar";
+import Sidebar from "./main-user/Sidebar";
 import styles from "../styles/HomeStyles";
 import { withStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";

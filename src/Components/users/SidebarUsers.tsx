@@ -41,21 +41,23 @@ const SidebarUsers: FC<Props> = ({ classes }) => {
       </Container>
       <Divider />
       <Container className={classes.friendList} maxWidth="sm">
-        {viewedUser.friendList.map(
-          (friend: { fullName: string; _id: string }) => (
-            <div
-              onClick={handleLocation.bind(this, friend._id)}
-              key={friend._id}
-              className={classes.friendsImg}
-            >
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                alt=""
-              />
-              <Typography>{friend.fullName}</Typography>
-            </div>
-          )
-        )}
+        {!viewedUser.friendList
+          ? null
+          : viewedUser.friendList.map(
+              (friend: { fullName: string; _id: string }) => (
+                <div
+                  onClick={handleLocation.bind(this, friend._id)}
+                  key={friend._id}
+                  className={classes.friendsImg}
+                >
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                    alt=""
+                  />
+                  <Typography>{friend.fullName}</Typography>
+                </div>
+              )
+            )}
       </Container>
       <Divider />
       <div className={classes.viewFriends}>

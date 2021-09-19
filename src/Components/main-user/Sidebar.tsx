@@ -7,10 +7,7 @@ import styles from "../../styles/SideBarStyles";
 import { Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
-
 import { useHistory } from "react-router-dom";
-
-import { useDispatch } from "react-redux";
 import UpdatePhoto from "./UpdatePhoto";
 
 interface Props {
@@ -23,7 +20,7 @@ const Sidebar: FC<Props> = ({ classes }) => {
 
   useEffect(() => {
     if (!user) return;
-    setImg(user.image.url);
+    setImg(user.image[0].url);
   }, []);
   const setProfilePic = (image: string) => {
     setImg(image);
