@@ -47,7 +47,7 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
   const handleClose = () => {
     setOpen(false);
   };
-  console.log(img);
+
   return (
     <div className={classes.root}>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>

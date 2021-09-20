@@ -109,9 +109,11 @@ const PostCard: FC<any> = ({ post }) => {
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
+          <Avatar
+            src={!post.author.image ? "" : post.author.image[0].url}
+            aria-label="recipe"
+            className={classes.avatar}
+          />
         }
         action={
           !isAuthor ? null : (

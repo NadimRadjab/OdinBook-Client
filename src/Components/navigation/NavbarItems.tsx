@@ -219,9 +219,7 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
               <AccountCircle />
             </IconButton>
             <IconButton aria-label="show 0 new notifications" color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <FriendsInvites />
-              </Badge>
+              <FriendsInvites />
             </IconButton>
             <IconButton
               onClick={openDrawer}

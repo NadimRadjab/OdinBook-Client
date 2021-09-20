@@ -6,8 +6,10 @@ import PeopleIcon from "@material-ui/icons/People";
 
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, Divider, Badge } from "@material-ui/core";
 import styles from "../../styles/FriendsInvitesStyles";
+import { useSelector } from "react-redux";
+import { State } from "../../redux/reducers";
 interface Props {
   classes: any;
 }
@@ -15,6 +17,7 @@ interface Props {
 const FriendsInvites: FC<Props> = ({ classes }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const user = useSelector((state: State) => state.auth.user);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,6 +29,35 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const friendInvites = () => {
+    if (!user) return;
+    return user.friendInvites.map((invite: any) => (
+      <Box className={classes.friendList}>
+        <p>{invite.fullName} send you a friend request.</p>
+        <img
+          className={classes.profilePic}
+          src={invite.image[0].url}
+          alt="sender-image"
+        />
+        <div className={classes.buttons}>
+          <Button size="small" color="primary" variant="outlined">
+            Accept
+          </Button>
+          <Button
+            onClick={handleClose}
+            size="small"
+            color="secondary"
+            variant="outlined"
+          >
+            Decline
+          </Button>
+          <Divider />
+        </div>
+      </Box>
+    ));
+  };
+  if (!user) return <div></div>;
   return (
     <div>
       <List component="nav" aria-label="Device settings">
@@ -36,7 +68,9 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
           aria-label="when device is locked"
           onClick={handleClickListItem}
         >
-          <PeopleIcon />
+          <Badge badgeContent={user.friendInvites.length} color="secondary">
+            <PeopleIcon />
+          </Badge>
         </ListItem>
       </List>
       <Menu
@@ -47,107 +81,7 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
         onClose={handleClose}
       >
         <Container className={classes.friendListContainer}>
-          <Box className={classes.friendList}>
-            <p>Some Name send you a friend request.</p>
-            <img
-              className={classes.profilePic}
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt=""
-            />
-            <div className={classes.buttons}>
-              <Button size="small" color="primary" variant="outlined">
-                Accept
-              </Button>
-              <Button
-                onClick={handleClose}
-                size="small"
-                color="secondary"
-                variant="outlined"
-              >
-                Decline
-              </Button>
-            </div>
-          </Box>
-          <Box className={classes.friendList}>
-            <p>Some Name send you a friend request.</p>
-            <img
-              className={classes.profilePic}
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt=""
-            />
-            <div className={classes.buttons}>
-              <Button size="small" color="primary" variant="outlined">
-                Accept
-              </Button>
-              <Button size="small" color="secondary" variant="outlined">
-                Decline
-              </Button>
-            </div>
-          </Box>
-          <Box className={classes.friendList}>
-            <p>Some Name send you a friend request.</p>
-            <img
-              className={classes.profilePic}
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt=""
-            />
-            <div className={classes.buttons}>
-              <Button size="small" color="primary" variant="outlined">
-                Accept
-              </Button>
-              <Button size="small" color="secondary" variant="outlined">
-                Decline
-              </Button>
-            </div>
-          </Box>
-          <Box className={classes.friendList}>
-            <p>Some Name send you a friend request.</p>
-            <img
-              className={classes.profilePic}
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt=""
-            />
-            <div className={classes.buttons}>
-              <Button size="small" color="primary" variant="outlined">
-                Accept
-              </Button>
-              <Button size="small" color="secondary" variant="outlined">
-                Decline
-              </Button>
-            </div>
-          </Box>
-          <Box className={classes.friendList}>
-            <p>Some Name send you a friend request.</p>
-            <img
-              className={classes.profilePic}
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt=""
-            />
-            <div className={classes.buttons}>
-              <Button size="small" color="primary" variant="outlined">
-                Accept
-              </Button>
-              <Button size="small" color="secondary" variant="outlined">
-                Decline
-              </Button>
-            </div>
-          </Box>
-          <Box className={classes.friendList}>
-            <p>Some Name send you a friend request.</p>
-            <img
-              className={classes.profilePic}
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt=""
-            />
-            <div className={classes.buttons}>
-              <Button size="small" color="primary" variant="outlined">
-                Accept
-              </Button>
-              <Button size="small" color="secondary" variant="outlined">
-                Decline
-              </Button>
-            </div>
-          </Box>
+          {friendInvites()}
         </Container>
       </Menu>
     </div>

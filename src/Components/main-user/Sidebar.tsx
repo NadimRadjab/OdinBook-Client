@@ -13,6 +13,11 @@ import UpdatePhoto from "./UpdatePhoto";
 interface Props {
   classes: any;
 }
+interface Friend {
+  fullName: string;
+  _id: string;
+  image: { url: string }[];
+}
 
 const Sidebar: FC<Props> = ({ classes }) => {
   const user = useSelector((state: State) => state.auth.user);
@@ -42,16 +47,13 @@ const Sidebar: FC<Props> = ({ classes }) => {
       </Container>
       <Divider />
       <Container className={classes.friendList} maxWidth="sm">
-        {user.friendList.map((friend: { fullName: string; _id: string }) => (
+        {user.friendList.map((friend: Friend) => (
           <div
             onClick={handleLocation.bind(this, friend._id)}
             key={friend._id}
             className={classes.friendsImg}
           >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-              alt=""
-            />
+            <img src={!friend.image ? "" : friend.image[0].url} alt="" />
             <Typography>{friend.fullName}</Typography>
           </div>
         ))}

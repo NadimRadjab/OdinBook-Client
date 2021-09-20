@@ -3,17 +3,19 @@ import { withStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
-
 import styles from "../../styles/SideBarStyles";
 import { useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
 import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-interface Props {
-  classes: any;
+
+interface Friend {
+  fullName: string;
+  _id: string;
+  image: { url: string }[];
 }
 
-const SidebarUsers: FC<Props> = ({ classes }) => {
+const SidebarUsers: FC<any> = ({ classes }) => {
   const user = useSelector((state: State) => state.auth.user);
   const viewedUser = useSelector((state: State) => state.users.singleUser);
 
@@ -21,6 +23,13 @@ const SidebarUsers: FC<Props> = ({ classes }) => {
   const handleLocation = (id: string) => {
     history.push(`/${id}`);
   };
+  const checkFriendList = () => {
+    if (!user) return;
+    return user.friendList.some((friend: Friend) => {
+      return viewedUser._id === friend._id;
+    });
+  };
+
   if (!user) return <div></div>;
   return (
     <div className={classes.root}>
@@ -30,10 +39,10 @@ const SidebarUsers: FC<Props> = ({ classes }) => {
         </Typography>
         <img
           className={classes.profilePic}
-          src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-          alt=""
+          src={!viewedUser.image ? "" : viewedUser.image[0].url}
+          alt="profile-pic"
         />
-        {!user.friendList.includes(viewedUser._id) ? (
+        {!checkFriendList() ? (
           <Button variant="contained" color="primary">
             Send a friend requst
           </Button>
@@ -43,27 +52,23 @@ const SidebarUsers: FC<Props> = ({ classes }) => {
       <Container className={classes.friendList} maxWidth="sm">
         {!viewedUser.friendList
           ? null
-          : viewedUser.friendList.map(
-              (friend: { fullName: string; _id: string }) => (
-                <div
-                  onClick={handleLocation.bind(this, friend._id)}
-                  key={friend._id}
-                  className={classes.friendsImg}
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                    alt=""
-                  />
-                  <Typography>{friend.fullName}</Typography>
-                </div>
-              )
-            )}
+          : viewedUser.friendList.map((friend: Friend) => (
+              <div
+                onClick={handleLocation.bind(this, friend._id)}
+                key={friend._id}
+                className={classes.friendsImg}
+              >
+                <img
+                  src={friend.image[0].url}
+                  alt="friend-list-profile-image"
+                />
+                <Typography>{friend.fullName}</Typography>
+              </div>
+            ))}
       </Container>
       <Divider />
       <div className={classes.viewFriends}>
-        {!user.friendList.includes(viewedUser._id) ? null : (
-          <Link to="/">View friends</Link>
-        )}
+        {!checkFriendList() ? null : <Link to="/">View friends</Link>}
       </div>
     </div>
   );

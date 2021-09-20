@@ -40,6 +40,9 @@ interface Profile {
   firstName: string;
   lastName: string;
   fullName: string;
+  image: {
+    url: string;
+  }[];
 }
 const SearchUsers: React.FC = () => {
   const classes = useStyles();
@@ -56,7 +59,7 @@ const SearchUsers: React.FC = () => {
       <div key={profile._id}>
         <ListItem>
           <ListItemAvatar>
-            <Avatar alt={"Avatar"} src={`/static/images/avatar/.jpg`} />
+            <Avatar alt={"Avatar"} src={profile.image[0].url} />
           </ListItemAvatar>
           <ListItemText id={profile._id} primary={`${profile.fullName} `} />
           <ListItemSecondaryAction>
