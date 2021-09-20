@@ -5,13 +5,11 @@ import Layout from "./Components/Layout";
 import Login from "./Components/auth/Login";
 import store from "./redux/store";
 import { Provider } from "react-redux";
-import { loadUser } from "./redux/actions/authActions";
-import { loadMainProfileUser } from "./redux/actions/mainUser/mainUserActions";
+import { loadUser } from "./redux/actions/mainUser/mainUserActions";
 import { useEffect } from "react";
 
 function App(props: any) {
   useEffect(() => {
-    store.dispatch(loadMainProfileUser());
     store.dispatch(loadUser());
   }, [store.dispatch]);
   return (

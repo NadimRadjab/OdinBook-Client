@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
 import styles from "../../styles/SideBarStyles";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
 import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { sendFriendInvite } from "../../redux/actions/mainUser/mainUserActions";
 
 interface Friend {
   fullName: string;
@@ -18,7 +19,7 @@ interface Friend {
 const SidebarUsers: FC<any> = ({ classes }) => {
   const user = useSelector((state: State) => state.mainUser.user);
   const viewedUser = useSelector((state: State) => state.users.singleUser);
-
+  const dispatch = useDispatch();
   const history = useHistory();
   const handleLocation = (id: string) => {
     history.push(`/${id}`);
@@ -28,6 +29,9 @@ const SidebarUsers: FC<any> = ({ classes }) => {
     return user.friendList.some((friend: Friend) => {
       return viewedUser._id === friend._id;
     });
+  };
+  const handleInvite = () => {
+    dispatch(sendFriendInvite(viewedUser._id));
   };
 
   if (!user) return <div></div>;
@@ -43,7 +47,7 @@ const SidebarUsers: FC<any> = ({ classes }) => {
           alt="profile-pic"
         />
         {!checkFriendList() ? (
-          <Button variant="contained" color="primary">
+          <Button onClick={handleInvite} variant="contained" color="primary">
             Send a friend requst
           </Button>
         ) : null}
@@ -59,7 +63,7 @@ const SidebarUsers: FC<any> = ({ classes }) => {
                 className={classes.friendsImg}
               >
                 <img
-                  src={friend.image[0].url}
+                  src={!friend.image ? "" : friend.image[0].url}
                   alt="friend-list-profile-image"
                 />
                 <Typography>{friend.fullName}</Typography>

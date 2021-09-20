@@ -13,7 +13,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import ChatIcon from "@material-ui/icons/Chat";
 import FriendsInvites from "../main-user/FriendsInvites";
-import { logout } from "../../redux/actions/authActions";
+import { logout } from "../../redux/actions/mainUser/authActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { getUsers } from "../../redux/actions/userActions";

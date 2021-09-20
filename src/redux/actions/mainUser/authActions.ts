@@ -8,7 +8,7 @@ import {
   REGISTER_SUCCESS,
   LOGOUT_SUCCESS,
 } from "./types";
-import { returnErros } from "./errorActions";
+import { returnErros } from "../errorActions";
 import axios from "axios";
 import { Dispatch } from "redux";
 
@@ -24,31 +24,6 @@ interface Register {
   firstName: string;
 }
 
-export const loadUser = () => (dispatch: Dispatch, getState: any) => {
-  dispatch({ type: USER_LOADING });
-  const config = {
-    headers: {
-      Authorization: getState().auth.token,
-    },
-  };
-
-  axios
-    .get(`${process.env.REACT_APP_URL}`, config)
-    .then((res) =>
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErros(err.response.data, err.response.status));
-
-      dispatch({
-        type: AUTH_ERROR,
-      });
-    });
-};
-
 export const register =
   ({ email, firstName, password, lastName, gender }: Register) =>
   (dispatch: Dispatch) => {
@@ -59,9 +34,14 @@ export const register =
       lastName,
       gender,
     };
-    console.log(body);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
     axios
-      .post(`${process.env.REACT_APP_URL}user/register`, body)
+      .post(`${process.env.REACT_APP_URL}user/register`, body, config)
       .then((res) =>
         dispatch({
           type: REGISTER_SUCCESS,

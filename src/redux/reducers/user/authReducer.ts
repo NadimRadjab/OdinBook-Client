@@ -7,26 +7,25 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
-} from "../actions/types";
+} from "../../actions//mainUser/types";
 
 interface AuthState {
   token: string | null;
   isAuthenticated: null | boolean;
   isLoading: boolean;
-  user: null | {
-    email: string;
-    password: string;
-    lastName: string;
-    gender: string;
-    firstName: string;
-  };
+  // user: null | {
+  //   email: string;
+  //   password: string;
+  //   lastName: string;
+  //   gender: string;
+  //   firstName: string;
+  // };
 }
 
 const initialState: AuthState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   isLoading: false,
-  user: null,
 };
 
 export default function (state = initialState, action: any) {
@@ -41,14 +40,13 @@ export default function (state = initialState, action: any) {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: action.payload,
       };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
-        ...action.payload,
+        token: action.payload.token,
         isAuthenticated: true,
         isLoading: false,
       };
@@ -62,7 +60,6 @@ export default function (state = initialState, action: any) {
         token: null,
         isAuthenticated: null,
         isLoading: false,
-        user: null,
       };
     default:
       return state;

@@ -1,22 +1,26 @@
-import { USER_LOADED, USER_LOADING } from "../actions/mainUser/types";
 import {
   LOGIN_SUCCESS,
+  SEND_INVITE,
   REGISTER_SUCCESS,
   LOGOUT_SUCCESS,
   LOGIN_FAIL,
   REGISTER_FAIL,
   AUTH_ERROR,
-} from "../actions/types";
+  USER_LOADING,
+  USER_LOADED,
+} from "../../actions/mainUser/types";
 
 interface MainUserState {
   isLoading: boolean;
-  user: {
-    email: string;
-    password: string;
-    lastName: string;
-    gender: string;
-    firstName: string;
-  } | null;
+  user:
+    | {
+        email: string;
+        password: string;
+        lastName: string;
+        gender: string;
+        firstName: string;
+      }[]
+    | any;
 }
 
 const initialState: MainUserState = {
@@ -52,6 +56,11 @@ export default function (state = initialState, action: any) {
         isLoading: false,
         user: [],
       };
+    case SEND_INVITE:
+      return {
+        ...state,
+      };
+
     default:
       return state;
   }
