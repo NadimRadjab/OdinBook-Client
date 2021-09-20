@@ -17,7 +17,7 @@ interface Props {
 const FriendsInvites: FC<Props> = ({ classes }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const user = useSelector((state: State) => state.auth.user);
+  const user = useSelector((state: State) => state.mainUser.user);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };

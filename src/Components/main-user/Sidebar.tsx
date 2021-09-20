@@ -20,7 +20,7 @@ interface Friend {
 }
 
 const Sidebar: FC<Props> = ({ classes }) => {
-  const user = useSelector((state: State) => state.auth.user);
+  const user = useSelector((state: State) => state.mainUser.user);
   const [img, setImg] = useState("");
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Sidebar: FC<Props> = ({ classes }) => {
             key={friend._id}
             className={classes.friendsImg}
           >
-            <img src={!friend.image ? "" : friend.image[0].url} alt="" />
+            <img src={friend.image[0].url} alt="" />
             <Typography>{friend.fullName}</Typography>
           </div>
         ))}

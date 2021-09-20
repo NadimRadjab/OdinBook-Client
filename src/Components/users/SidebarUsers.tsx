@@ -16,7 +16,7 @@ interface Friend {
 }
 
 const SidebarUsers: FC<any> = ({ classes }) => {
-  const user = useSelector((state: State) => state.auth.user);
+  const user = useSelector((state: State) => state.mainUser.user);
   const viewedUser = useSelector((state: State) => state.users.singleUser);
 
   const history = useHistory();

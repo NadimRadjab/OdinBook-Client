@@ -19,7 +19,7 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
   const [img, setImg] = useState("");
   const [file, setFile] = useState<any>(null);
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.auth.user);
+  const user = useSelector((state: State) => state.mainUser.user);
 
   useEffect(() => {
     setImg(user.image[0].profile);

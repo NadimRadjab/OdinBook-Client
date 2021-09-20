@@ -64,7 +64,7 @@ const PostCard: FC<any> = ({ post }) => {
   const isLoading = useSelector((state: any) => state.comments.isLoading);
 
   const allComments = useSelector((state: any) => state.comments.comments);
-  const user = useSelector((state: State) => state.auth.user);
+  const user = useSelector((state: State) => state.mainUser.user);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
