@@ -1,4 +1,10 @@
-import { USER_LOADING, USER_LOADED, AUTH_ERROR, SEND_INVITE } from "./types";
+import {
+  USER_LOADING,
+  USER_LOADED,
+  AUTH_ERROR,
+  SEND_INVITE,
+  REMOVE_INVITE,
+} from "./types";
 import { returnErros } from "../errorActions";
 import axios from "axios";
 import { Dispatch } from "redux";
@@ -39,6 +45,25 @@ export const sendFriendInvite =
         dispatch({
           type: SEND_INVITE,
           payload: res.data,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+      });
+  };
+export const removeFriendInvite =
+  (id: string) => (dispatch: Dispatch, getState: any) => {
+    const config = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .delete(`${process.env.REACT_APP_URL}friends/${id}/invite`, config)
+      .then((res) =>
+        dispatch({
+          type: REMOVE_INVITE,
+          payload: id,
         })
       )
       .catch((err) => {

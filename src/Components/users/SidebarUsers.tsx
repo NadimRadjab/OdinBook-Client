@@ -8,7 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
 import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { sendFriendInvite } from "../../redux/actions/mainUser/mainUserActions";
+import {
+  sendFriendInvite,
+  removeFriendInvite,
+} from "../../redux/actions/mainUser/mainUserActions";
+import { useEffect } from "react";
 
 interface Friend {
   fullName: string;
@@ -24,14 +28,45 @@ const SidebarUsers: FC<any> = ({ classes }) => {
   const handleLocation = (id: string) => {
     history.push(`/${id}`);
   };
+
   const checkFriendList = () => {
     if (!user) return;
     return user.friendList.some((friend: Friend) => {
       return viewedUser._id === friend._id;
     });
   };
+
+  const checkFriendInvites = () => {
+    if (!viewedUser) return;
+    return viewedUser.friendInvites.some((friend: Friend) => {
+      return friend._id === user._id;
+    });
+  };
+
   const handleInvite = () => {
     dispatch(sendFriendInvite(viewedUser._id));
+  };
+  const handleRemoveInvite = () => {
+    dispatch(removeFriendInvite(viewedUser._id));
+  };
+  const handleRequestButtons = (): JSX.Element => {
+    if (!checkFriendInvites()) {
+      return (
+        <Button onClick={handleInvite} variant="contained" color="primary">
+          Send a friend requst
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          onClick={handleRemoveInvite}
+          variant="contained"
+          color="default"
+        >
+          Cancel friend request
+        </Button>
+      );
+    }
   };
 
   if (!user) return <div></div>;
@@ -46,11 +81,7 @@ const SidebarUsers: FC<any> = ({ classes }) => {
           src={!viewedUser.image ? "" : viewedUser.image[0].url}
           alt="profile-pic"
         />
-        {!checkFriendList() ? (
-          <Button onClick={handleInvite} variant="contained" color="primary">
-            Send a friend requst
-          </Button>
-        ) : null}
+        {!checkFriendList() ? handleRequestButtons() : null}
       </Container>
       <Divider />
       <Container className={classes.friendList} maxWidth="sm">

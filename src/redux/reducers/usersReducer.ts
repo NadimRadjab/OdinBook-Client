@@ -7,6 +7,7 @@ import {
   GET_USER_POSTS,
   LOAD_USER_POSTS,
 } from "../actions/types";
+import { SEND_INVITE, REMOVE_INVITE } from "../actions/mainUser/types";
 
 type Post = {
   _id: string;
@@ -31,15 +32,16 @@ type Post = {
 
 interface UsersState {
   searchedUsers: {};
-  singleUser: {}[];
+  singleUser: any;
   posts: Post;
+
   isUserLoading: boolean;
   isPostsLoading: boolean;
 }
 
 const initialState: UsersState = {
   searchedUsers: [],
-  singleUser: [],
+  singleUser: {},
   posts: [],
   isUserLoading: false,
   isPostsLoading: false,
@@ -101,6 +103,24 @@ export default function (state = initialState, action: any) {
             return { ...post, likes: filterLike };
           } else return post;
         }),
+      };
+    case SEND_INVITE:
+      return {
+        ...state,
+        singleUser: {
+          ...state.singleUser,
+          friendInvites: [action.payload, ...state.singleUser.friendInvites],
+        },
+      };
+    case REMOVE_INVITE:
+      return {
+        ...state,
+        singleUser: {
+          ...state.singleUser,
+          friendInvites: state.singleUser.friendInvites.filter(
+            (friend: { _id: string }) => friend._id === action.payload
+          ),
+        },
       };
 
     default:

@@ -10,3 +10,4 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 
 //user
 export const SEND_INVITE = "SEND_INVITE";
+export const REMOVE_INVITE = "REMOVE_INVITE";
