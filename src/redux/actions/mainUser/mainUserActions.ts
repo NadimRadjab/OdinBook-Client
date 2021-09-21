@@ -4,6 +4,8 @@ import {
   AUTH_ERROR,
   SEND_INVITE,
   REMOVE_INVITE,
+  CANCEL_FRIEND_REQUEST,
+  ACCEPT_INVITE,
 } from "./types";
 import { returnErros } from "../errorActions";
 import axios from "axios";
@@ -51,7 +53,7 @@ export const sendFriendInvite =
         dispatch(returnErros(err.response.data, err.response.status));
       });
   };
-export const removeFriendInvite =
+export const cancelFriendInvite =
   (id: string) => (dispatch: Dispatch, getState: any) => {
     const config = {
       headers: {
@@ -62,8 +64,46 @@ export const removeFriendInvite =
       .delete(`${process.env.REACT_APP_URL}friends/${id}/invite`, config)
       .then((res) =>
         dispatch({
+          type: CANCEL_FRIEND_REQUEST,
+          payload: id,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+      });
+  };
+export const removeFriendInvite =
+  (id: string) => (dispatch: Dispatch, getState: any) => {
+    const config = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .delete(`${process.env.REACT_APP_URL}friends/${id}/remove`, config)
+      .then((res) =>
+        dispatch({
           type: REMOVE_INVITE,
           payload: id,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+      });
+  };
+export const acceptFriendInvite =
+  (id: string) => (dispatch: Dispatch, getState: any) => {
+    const config = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .put(`${process.env.REACT_APP_URL}friends/${id}`, id, config)
+      .then((res) =>
+        dispatch({
+          type: ACCEPT_INVITE,
+          payload: res.data,
         })
       )
       .catch((err) => {

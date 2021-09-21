@@ -8,15 +8,20 @@ import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import { Box, Container, Divider, Badge } from "@material-ui/core";
 import styles from "../../styles/FriendsInvitesStyles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/reducers";
+import {
+  removeFriendInvite,
+  acceptFriendInvite,
+} from "../../redux/actions/mainUser/mainUserActions";
+
 interface Props {
   classes: any;
 }
 
 const FriendsInvites: FC<Props> = ({ classes }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
+  const dispatch = useDispatch();
   const user = useSelector((state: State) => state.mainUser.user);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -26,8 +31,12 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
     setAnchorEl(null);
   };
 
-  const handleClose = () => {
+  const handleClose = (id: string) => {
     setAnchorEl(null);
+    dispatch(removeFriendInvite(id));
+  };
+  const handleAccept = (id: string) => {
+    dispatch(acceptFriendInvite(id));
   };
 
   const friendInvites = () => {
@@ -41,11 +50,16 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
           alt="sender-image"
         />
         <div className={classes.buttons}>
-          <Button size="small" color="primary" variant="outlined">
+          <Button
+            onClick={handleAccept.bind(this, invite._id)}
+            size="small"
+            color="primary"
+            variant="outlined"
+          >
             Accept
           </Button>
           <Button
-            onClick={handleClose}
+            onClick={handleClose.bind(this, invite._id)}
             size="small"
             color="secondary"
             variant="outlined"

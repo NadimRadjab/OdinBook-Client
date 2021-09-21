@@ -16,7 +16,7 @@ import FriendsInvites from "../main-user/FriendsInvites";
 import { logout } from "../../redux/actions/mainUser/authActions";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { getUsers } from "../../redux/actions/userActions";
+import { getUsers } from "../../redux/actions/usersActions";
 
 const useStyles = makeStyles((theme) => ({
   grow: {

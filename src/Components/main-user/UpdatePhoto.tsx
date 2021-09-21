@@ -7,7 +7,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { Typography, TextField, DialogTitle } from "@material-ui/core";
-import { updateImage } from "../../redux/actions/userActions";
+import { updateImage } from "../../redux/actions/usersActions";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { useDispatch } from "react-redux";
 import styles from "../../styles/UpdatePhotoStyles";

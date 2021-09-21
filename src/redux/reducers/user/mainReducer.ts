@@ -1,6 +1,5 @@
 import {
   LOGIN_SUCCESS,
-  SEND_INVITE,
   REGISTER_SUCCESS,
   LOGOUT_SUCCESS,
   LOGIN_FAIL,
@@ -8,6 +7,8 @@ import {
   AUTH_ERROR,
   USER_LOADING,
   USER_LOADED,
+  REMOVE_INVITE,
+  ACCEPT_INVITE,
 } from "../../actions/mainUser/types";
 
 interface MainUserState {
@@ -56,9 +57,27 @@ export default function (state = initialState, action: any) {
         isLoading: false,
         user: [],
       };
-    case SEND_INVITE:
+    case REMOVE_INVITE:
       return {
         ...state,
+        user: {
+          ...state.user,
+          friendInvites: state.user.friendInvites.filter(
+            (friend: { _id: string }) => friend._id !== action.payload
+          ),
+        },
+      };
+    case ACCEPT_INVITE:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          friendList: [action.payload.friend, ...state.user.friendList],
+          friendInvites: state.user.friendInvites.filter(
+            (friend: { _id: string }) =>
+              friend._id !== action.payload.friend._id
+          ),
+        },
       };
 
     default:

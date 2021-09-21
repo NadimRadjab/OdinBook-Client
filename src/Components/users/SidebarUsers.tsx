@@ -10,9 +10,9 @@ import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import {
   sendFriendInvite,
-  removeFriendInvite,
+  cancelFriendInvite,
 } from "../../redux/actions/mainUser/mainUserActions";
-import { useEffect } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface Friend {
   fullName: string;
@@ -47,7 +47,7 @@ const SidebarUsers: FC<any> = ({ classes }) => {
     dispatch(sendFriendInvite(viewedUser._id));
   };
   const handleRemoveInvite = () => {
-    dispatch(removeFriendInvite(viewedUser._id));
+    dispatch(cancelFriendInvite(viewedUser._id));
   };
   const handleRequestButtons = (): JSX.Element => {
     if (!checkFriendInvites()) {
@@ -69,7 +69,12 @@ const SidebarUsers: FC<any> = ({ classes }) => {
     }
   };
 
-  if (!user) return <div></div>;
+  if (!viewedUser)
+    return (
+      <div>
+        <CircularProgress />
+      </div>
+    );
   return (
     <div className={classes.root}>
       <Container className={classes.imgContainer} maxWidth="sm">
