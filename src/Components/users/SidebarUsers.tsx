@@ -11,7 +11,8 @@ import { useHistory } from "react-router-dom";
 import {
   sendFriendInvite,
   cancelFriendInvite,
-} from "../../redux/actions/mainUser/mainUserActions";
+  removeFriend,
+} from "../../redux/actions/user/userActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface Friend {
@@ -22,10 +23,11 @@ interface Friend {
 
 const SidebarUsers: FC<any> = ({ classes }) => {
   const user = useSelector((state: State) => state.mainUser.user);
-  const viewedUser = useSelector((state: State) => state.users.singleUser);
+  const viewedUser = useSelector((state: State) => state.users.viewdUser);
   const dispatch = useDispatch();
   const history = useHistory();
   const handleLocation = (id: string) => {
+    if (id === user._id) return history.push(`/`);
     history.push(`/${id}`);
   };
 
@@ -48,6 +50,9 @@ const SidebarUsers: FC<any> = ({ classes }) => {
   };
   const handleRemoveInvite = () => {
     dispatch(cancelFriendInvite(viewedUser._id));
+  };
+  const handleRemoveFriend = () => {
+    dispatch(removeFriend(user._id, viewedUser._id));
   };
   const handleRequestButtons = (): JSX.Element => {
     if (!checkFriendInvites()) {
@@ -108,7 +113,13 @@ const SidebarUsers: FC<any> = ({ classes }) => {
       </Container>
       <Divider />
       <div className={classes.viewFriends}>
-        {!checkFriendList() ? null : <Link to="/">View friends</Link>}
+        {!checkFriendList() ? null : (
+          <Button
+            onClick={handleRemoveFriend}
+            color="secondary"
+            variant="outlined"
+          >{`Unfriend ${viewedUser.fullName}`}</Button>
+        )}
       </div>
     </div>
   );

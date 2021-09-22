@@ -47,11 +47,13 @@ interface Profile {
 const SearchUsers: React.FC = () => {
   const classes = useStyles();
   const profiles = useSelector((state: State) => state.users.searchedUsers);
+  const user = useSelector((state: State) => state.mainUser.user);
   const profilesLoading = useSelector(
     (state: State) => state.users.isUserLoading
   );
   const history = useHistory();
   const viewProfile = (id: string) => {
+    if (id === user._id) return history.push(`/`);
     history.push(`/${id}`);
   };
   const renderProfiles = () => {

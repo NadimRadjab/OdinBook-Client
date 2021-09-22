@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -8,6 +8,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import useFormState from "../../hooks/useFormState";
 import { connect } from "react-redux";
 import { addPost } from "../../redux/actions/postActions";
+import UploadImage from "./UploadImage";
 const useStyles = makeStyles({
   root: {
     width: 550,
@@ -16,12 +17,14 @@ const useStyles = makeStyles({
 const PostForm: FC<any> = ({ addPost }) => {
   const classes = useStyles();
   const [text, setText, resetText] = useFormState("");
+  const [image, setImage] = useState({});
 
   const onSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     const newText = {
       text,
     };
+
     addPost(newText);
     resetText();
   };
@@ -45,9 +48,10 @@ const PostForm: FC<any> = ({ addPost }) => {
           <Button type="submit" size="small" color="primary">
             Add
           </Button>
-          <Button size="small" color="primary">
+          <UploadImage setImage={setImage} />
+          {/* <Button size="small" color="primary">
             Learn More
-          </Button>
+          </Button> */}
         </CardActions>
       </ValidatorForm>
     </Card>

@@ -5,7 +5,7 @@ import Layout from "./Components/Layout";
 import Login from "./Components/auth/Login";
 import store from "./redux/store";
 import { Provider } from "react-redux";
-import { loadUser } from "./redux/actions/mainUser/mainUserActions";
+import { loadUser } from "./redux/actions/user/userActions";
 import { useEffect } from "react";
 
 function App(props: any) {

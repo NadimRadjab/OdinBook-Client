@@ -13,7 +13,7 @@ import { State } from "../../redux/reducers";
 import {
   removeFriendInvite,
   acceptFriendInvite,
-} from "../../redux/actions/mainUser/mainUserActions";
+} from "../../redux/actions/user/userActions";
 
 interface Props {
   classes: any;

@@ -9,7 +9,9 @@ import {
   USER_LOADED,
   REMOVE_INVITE,
   ACCEPT_INVITE,
-} from "../../actions/mainUser/types";
+  SEND_INVITE,
+  REMOVE_FRIEND,
+} from "../../actions/user/types";
 
 interface MainUserState {
   isLoading: boolean;
@@ -57,6 +59,10 @@ export default function (state = initialState, action: any) {
         isLoading: false,
         user: [],
       };
+    case SEND_INVITE:
+      return {
+        ...state,
+      };
     case REMOVE_INVITE:
       return {
         ...state,
@@ -76,6 +82,16 @@ export default function (state = initialState, action: any) {
           friendInvites: state.user.friendInvites.filter(
             (friend: { _id: string }) =>
               friend._id !== action.payload.friend._id
+          ),
+        },
+      };
+    case REMOVE_FRIEND:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          friendList: state.user.friendList.filter(
+            (friend: { _id: string }) => friend._id !== action.payload.friendId
           ),
         },
       };

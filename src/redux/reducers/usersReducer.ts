@@ -9,10 +9,10 @@ import {
 } from "../actions/types";
 import {
   SEND_INVITE,
-  REMOVE_INVITE,
   CANCEL_FRIEND_REQUEST,
   ACCEPT_INVITE,
-} from "../actions/mainUser/types";
+  REMOVE_FRIEND,
+} from "../actions/user/types";
 
 type Post = {
   _id: string;
@@ -37,7 +37,7 @@ type Post = {
 
 interface UsersState {
   searchedUsers: {};
-  singleUser: any;
+  viewdUser: any;
   posts: Post;
 
   isUserLoading: boolean;
@@ -46,7 +46,7 @@ interface UsersState {
 
 const initialState: UsersState = {
   searchedUsers: [],
-  singleUser: null,
+  viewdUser: null,
   posts: [],
   isUserLoading: false,
   isPostsLoading: false,
@@ -73,7 +73,7 @@ export default function (state = initialState, action: any) {
     case GET_USER:
       return {
         ...state,
-        singleUser: action.payload,
+        viewdUser: action.payload,
         isUserLoading: false,
       };
     case GET_USER_POSTS:
@@ -112,27 +112,43 @@ export default function (state = initialState, action: any) {
     case SEND_INVITE:
       return {
         ...state,
-        singleUser: {
-          ...state.singleUser,
-          friendInvites: [action.payload, ...state.singleUser.friendInvites],
+        viewdUser: {
+          ...state.viewdUser,
+          friendInvites: [action.payload, ...state.viewdUser.friendInvites],
         },
       };
     case CANCEL_FRIEND_REQUEST:
       return {
         ...state,
-        singleUser: {
-          ...state.singleUser,
-          friendInvites: state.singleUser.friendInvites.filter(
+        viewdUser: {
+          ...state.viewdUser,
+          friendInvites: state.viewdUser.friendInvites.filter(
             (friend: { _id: string }) => friend._id === action.payload
           ),
         },
       };
     case ACCEPT_INVITE:
+      if (!state.viewdUser) {
+        return {
+          ...state,
+        };
+      } else
+        return {
+          ...state,
+          viewdUser: {
+            ...state.viewdUser,
+            friendList: [action.payload.user, ...state.viewdUser.friendList],
+          },
+        };
+
+    case REMOVE_FRIEND:
       return {
         ...state,
-        singleUser: {
-          ...state.singleUser,
-          friendList: [action.payload.user, ...state.singleUser.friendList],
+        viewdUser: {
+          ...state.viewdUser,
+          friendList: state.viewdUser.friendList.filter(
+            (friend: { _id: string }) => friend._id !== action.payload.id
+          ),
         },
       };
 

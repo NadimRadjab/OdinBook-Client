@@ -14,7 +14,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import styles from "../../styles/RegisterStyles";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
-import { register } from "../../redux/actions/mainUser/authActions";
+import { register } from "../../redux/actions/user/authActions";
 
 interface Props {
   classes: any;

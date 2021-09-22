@@ -9,6 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
+import CardMedia from "@material-ui/core/CardMedia";
 import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
@@ -37,8 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: "1.5rem",
     },
     media: {
-      height: 0,
-      paddingTop: "56.25%", // 16:9
+      height: "500px",
     },
     like: {
       display: "flex",
@@ -130,6 +130,13 @@ const PostCard: FC<any> = ({ post }) => {
         title={fullName}
         subheader={new Date(post.date).toUTCString().substr(0, 17)}
       />
+      {!post.image.length ? null : (
+        <CardMedia
+          className={classes.media}
+          image={post.image[0].url}
+          title="post-image"
+        />
+      )}
 
       <CardContent>
         {!toggleUpdate ? (

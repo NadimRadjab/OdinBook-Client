@@ -7,19 +7,12 @@ import {
   LOGOUT_SUCCESS,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
-} from "../../actions//mainUser/types";
+} from "../../actions/user/types";
 
 interface AuthState {
   token: string | null;
   isAuthenticated: null | boolean;
   isLoading: boolean;
-  // user: null | {
-  //   email: string;
-  //   password: string;
-  //   lastName: string;
-  //   gender: string;
-  //   firstName: string;
-  // };
 }
 
 const initialState: AuthState = {

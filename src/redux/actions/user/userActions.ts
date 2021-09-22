@@ -6,12 +6,14 @@ import {
   REMOVE_INVITE,
   CANCEL_FRIEND_REQUEST,
   ACCEPT_INVITE,
+  REMOVE_FRIEND,
 } from "./types";
 import { returnErros } from "../errorActions";
 import axios from "axios";
 import { Dispatch } from "redux";
+import { State } from "../../reducers";
 
-export const loadUser = () => (dispatch: Dispatch, getState: any) => {
+export const loadUser = () => (dispatch: Dispatch, getState: () => State) => {
   dispatch({ type: USER_LOADING });
   const config = {
     headers: {
@@ -35,7 +37,7 @@ export const loadUser = () => (dispatch: Dispatch, getState: any) => {
     });
 };
 export const sendFriendInvite =
-  (id: string) => (dispatch: Dispatch, getState: any) => {
+  (id: string) => (dispatch: Dispatch, getState: () => State) => {
     const config = {
       headers: {
         Authorization: getState().auth.token,
@@ -54,7 +56,7 @@ export const sendFriendInvite =
       });
   };
 export const cancelFriendInvite =
-  (id: string) => (dispatch: Dispatch, getState: any) => {
+  (id: string) => (dispatch: Dispatch, getState: () => State) => {
     const config = {
       headers: {
         Authorization: getState().auth.token,
@@ -73,7 +75,7 @@ export const cancelFriendInvite =
       });
   };
 export const removeFriendInvite =
-  (id: string) => (dispatch: Dispatch, getState: any) => {
+  (id: string) => (dispatch: Dispatch, getState: () => State) => {
     const config = {
       headers: {
         Authorization: getState().auth.token,
@@ -92,7 +94,7 @@ export const removeFriendInvite =
       });
   };
 export const acceptFriendInvite =
-  (id: string) => (dispatch: Dispatch, getState: any) => {
+  (id: string) => (dispatch: Dispatch, getState: () => State) => {
     const config = {
       headers: {
         Authorization: getState().auth.token,
@@ -104,6 +106,27 @@ export const acceptFriendInvite =
         dispatch({
           type: ACCEPT_INVITE,
           payload: res.data,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+        console.log(err);
+      });
+  };
+export const removeFriend =
+  (id: string, friendId: string) =>
+  (dispatch: Dispatch, getState: () => State) => {
+    const config = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .delete(`${process.env.REACT_APP_URL}friends/${friendId}`, config)
+      .then((res) =>
+        dispatch({
+          type: REMOVE_FRIEND,
+          payload: { id, friendId },
         })
       )
       .catch((err) => {
