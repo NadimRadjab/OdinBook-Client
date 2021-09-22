@@ -10,6 +10,8 @@ import {
   LIKE_POST,
   UNLIKE_POST,
   LIKE_USER_POST,
+  ADD_POST_IMAGE,
+  POSTS_LOADED,
   UNLIKE_USER_POST,
 } from "./types";
 
@@ -62,6 +64,27 @@ export const addPost = (post: Post) => (dispatch: Dispatch, getState: any) => {
       dispatch(returnErros(err.response.data, err.response.status));
     });
 };
+export const addPostImage =
+  (file: any) => (dispatch: Dispatch, getState: any) => {
+    const token = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .post(`${process.env.REACT_APP_URL}posts/image`, file, token)
+      .then((res) => [
+        dispatch({
+          type: ADD_POST_IMAGE,
+          payload: res.data,
+        }),
+        dispatch(postLoaded()),
+      ])
+      .catch((err) => {
+        // dispatch(returnErros(err.response.data, err.response.status));
+        console.log(err);
+      });
+  };
 export const updatePost =
   (id: string, text: any) => (dispatch: Dispatch, getState: any) => {
     const token = {
@@ -151,5 +174,10 @@ export const unlikePost =
 export const postLoading = () => {
   return {
     type: POSTS_LOADING,
+  };
+};
+export const postLoaded = () => {
+  return {
+    type: POSTS_LOADED,
   };
 };

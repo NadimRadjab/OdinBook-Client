@@ -18,6 +18,7 @@ const Home: FC<Props> = ({ classes }) => {
   const dispatch = useDispatch();
   const allPosts = useSelector((state: any) => state.posts.posts);
   const userLoading = useSelector((state: State) => state.auth.isLoading);
+  const isPostsLoading = useSelector((state: any) => state.posts.isLoading);
 
   useEffect(() => {
     dispatch(getPosts());
@@ -37,12 +38,13 @@ const Home: FC<Props> = ({ classes }) => {
         <div className={classes.form}>
           <PostForm />
         </div>
-
-        {allPosts === undefined
-          ? null
-          : allPosts.map((post: any) => (
-              <PostCard key={post._id} post={post} />
-            ))}
+        {isPostsLoading ? (
+          <div>
+            <CircularProgress />
+          </div>
+        ) : (
+          allPosts.map((post: any) => <PostCard key={post._id} post={post} />)
+        )}
       </div>
     </div>
   );

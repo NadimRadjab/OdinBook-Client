@@ -46,9 +46,6 @@ const UpdatePost: FC<any> = ({ handleUpdate, text, id }) => {
           <Button type="submit" size="small" color="primary">
             Update
           </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
         </CardActions>
       </ValidatorForm>
     </Card>

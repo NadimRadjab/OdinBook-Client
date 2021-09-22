@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,26 +8,26 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { Typography, TextField, DialogTitle } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import { useDispatch } from "react-redux";
 import styles from "../../styles/UpdatePhotoStyles";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/reducers";
-const UploadImage: FC<any> = ({ classes, setImage }) => {
+import { addPostImage, postLoading } from "../../redux/actions/postActions";
+
+const UploadImage: FC<any> = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState("");
   const [file, setFile] = useState<any>(null);
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.mainUser.user);
 
-  //   useEffect(() => {
-  //     setImg(user.image[0].profile);
-  //   }, []);
   const handleSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     if (!file) return;
     const data = new FormData();
     data.append("image", file);
-    setImage(data);
+
+    dispatch(addPostImage(data));
+    dispatch(postLoading());
   };
   const handleChange = (e: React.ChangeEvent<any>) => {
     setFile(e.target.files[0]);
@@ -47,7 +47,7 @@ const UploadImage: FC<any> = ({ classes, setImage }) => {
 
   return (
     <div className={classes.root}>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <Button color="primary" onClick={handleClickOpen}>
         Upload Image
       </Button>
       <Dialog

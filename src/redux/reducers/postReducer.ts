@@ -6,6 +6,8 @@ import {
   POSTS_LOADING,
   LIKE_POST,
   UNLIKE_POST,
+  ADD_POST_IMAGE,
+  POSTS_LOADED,
 } from "../actions/types";
 
 interface PostState {
@@ -46,6 +48,7 @@ export default function (state = initialState, action: any) {
         isLoading: false,
       };
     case ADD_POST:
+    case ADD_POST_IMAGE:
       return {
         ...state,
         posts: [action.payload, ...state.posts],
@@ -93,7 +96,13 @@ export default function (state = initialState, action: any) {
 
     case POSTS_LOADING:
       return {
+        ...state,
         isLoading: true,
+      };
+    case POSTS_LOADED:
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;

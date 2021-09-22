@@ -13,7 +13,7 @@ const styles = createStyles({
     margin: "1rem",
   },
   form: {
-    marginBottom: "auto",
+    marginBottom: "4rem",
   },
 });
 export default styles;

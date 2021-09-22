@@ -61,7 +61,9 @@ const PostCard: FC<any> = ({ post }) => {
   const [expanded, setExpanded] = useState(false);
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const dispatch = useDispatch();
-  const isLoading = useSelector((state: any) => state.comments.isLoading);
+  const isCommentsLoading = useSelector(
+    (state: any) => state.comments.isLoading
+  );
 
   const allComments = useSelector((state: any) => state.comments.comments);
   const user = useSelector((state: State) => state.mainUser.user);
@@ -98,12 +100,7 @@ const PostCard: FC<any> = ({ post }) => {
     likes = `${likesCount} likes`;
   }
 
-  if (isLoading)
-    return (
-      <div>
-        <CircularProgress />
-      </div>
-    );
+  if (isCommentsLoading) return <CircularProgress />;
 
   return (
     <Card className={classes.root}>

@@ -2,9 +2,8 @@ import { createStyles } from "@material-ui/core";
 const styles = createStyles((theme) => ({
   root: {
     margin: 0,
-    width: "100%",
+    width: "50%",
     display: "flex",
-    justifyContent: "center",
     padding: theme.spacing(1),
   },
   closeButton: {

@@ -13,11 +13,13 @@ const useStyles = makeStyles({
   root: {
     width: 550,
   },
+  addBtn: {
+    width: 80,
+  },
 });
 const PostForm: FC<any> = ({ addPost }) => {
   const classes = useStyles();
   const [text, setText, resetText] = useFormState("");
-  const [image, setImage] = useState({});
 
   const onSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
@@ -44,16 +46,13 @@ const PostForm: FC<any> = ({ addPost }) => {
           />
         </CardContent>
 
-        <CardActions>
+        <CardActions className={classes.addBtn}>
           <Button type="submit" size="small" color="primary">
-            Add
+            Add Text
           </Button>
-          <UploadImage setImage={setImage} />
-          {/* <Button size="small" color="primary">
-            Learn More
-          </Button> */}
         </CardActions>
       </ValidatorForm>
+      <UploadImage />
     </Card>
   );
 };
