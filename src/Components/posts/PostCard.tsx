@@ -23,7 +23,7 @@ import {
   deletePost,
   likePost,
   unlikePost,
-} from "../../redux/actions/postActions";
+} from "../../redux/actions/posts/postActions";
 import { useState } from "react";
 import UpdatePost from "./UpdatePost";
 import AddComment from "../comments/AddComment";

@@ -8,7 +8,7 @@ import {
   UNLIKE_POST,
   ADD_POST_IMAGE,
   POSTS_LOADED,
-} from "../actions/types";
+} from "../actions/posts/types";
 
 interface PostState {
   posts: {

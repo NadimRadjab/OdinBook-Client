@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { getPosts } from "../redux/actions/postActions";
+import { getPosts } from "../redux/actions/posts/postActions";
 import { getComments } from "../redux/actions/commentActions";
 import { useSelector, useDispatch } from "react-redux";
 import PostCard from "./posts/PostCard";

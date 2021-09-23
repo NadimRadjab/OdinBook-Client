@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import useFormState from "../../hooks/useFormState";
 import { useDispatch } from "react-redux";
-import { updatePost } from "../../redux/actions/postActions";
+import { updatePost } from "../../redux/actions/posts/postActions";
 const useStyles = makeStyles({
   root: {
     width: 550,

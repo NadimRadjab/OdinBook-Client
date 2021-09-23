@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { returnErros } from "./errorActions";
+import { returnErros } from "../errorActions";
 import {
   POSTS_LOADING,
   GET_POSTS,
@@ -9,11 +9,10 @@ import {
   ADD_POST,
   LIKE_POST,
   UNLIKE_POST,
-  LIKE_USER_POST,
   ADD_POST_IMAGE,
   POSTS_LOADED,
-  UNLIKE_USER_POST,
 } from "./types";
+import { LIKE_USER_POST, UNLIKE_USER_POST } from "../types";
 
 interface Post {
   _id: string;
@@ -81,8 +80,7 @@ export const addPostImage =
         dispatch(postLoaded()),
       ])
       .catch((err) => {
-        // dispatch(returnErros(err.response.data, err.response.status));
-        console.log(err);
+        dispatch(returnErros(err.response.data, err.response.status));
       });
   };
 export const updatePost =

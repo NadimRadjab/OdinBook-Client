@@ -1,12 +1,15 @@
 import { createStyles } from "@material-ui/core/styles";
 const styles = createStyles({
-  //   root: {
-  //     height: "100vh",
-  //     display: "grid",
-  //     gridTemplateColumns: "repeat(2 1fr)",
-  //     // gridTemplateColumns: "100% 1fr 1fr",
-  //     // gridTemplateRows: "20% 50% 100% ",
-  //   },
+  root: {},
   //   main: { gridRow: "2", gridColumn: "3" },
+  chatBox: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    position: "fixed",
+    top: "auto",
+    bottom: 0,
+    width: "90%",
+  },
 });
 export default styles;

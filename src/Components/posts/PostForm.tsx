@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import useFormState from "../../hooks/useFormState";
 import { connect } from "react-redux";
-import { addPost } from "../../redux/actions/postActions";
+import { addPost } from "../../redux/actions/posts/postActions";
 import UploadImage from "./UploadImage";
 const useStyles = makeStyles({
   root: {

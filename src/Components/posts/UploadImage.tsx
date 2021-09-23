@@ -11,8 +11,10 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import styles from "../../styles/UpdatePhotoStyles";
 import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/reducers";
-import { addPostImage, postLoading } from "../../redux/actions/postActions";
-
+import {
+  addPostImage,
+  postLoading,
+} from "../../redux/actions/posts/postActions";
 const UploadImage: FC<any> = ({ classes }) => {
   const [open, setOpen] = useState(false);
   const [img, setImg] = useState("");

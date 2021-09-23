@@ -8,6 +8,7 @@ import styles from "../styles/LayoutStyles";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SearchUsers from "./users/SearchUsers";
+import ChatBox from "./Chat/ChatBox";
 interface Props {
   classes: any;
   props: any;
@@ -33,6 +34,9 @@ const Layout: FC<Props> = ({ props, classes }) => {
           <Route exact path="/:id" render={() => <ViewUser {...props} />} />
         </Switch>
       </main>
+      <div className={classes.chatBox}>
+        <ChatBox />
+      </div>
     </div>
   );
 };

@@ -7,8 +7,9 @@ import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import NavbarItems from "./NavbarItems";
+import ChatList from "../Chat/ChatList";
 
-const drawerWidth = 240;
+const drawerWidth = 340;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -88,7 +89,7 @@ function Navbar() {
           </IconButton>
         </div>
         <Divider />
-        <List></List>
+        <ChatList />
       </Drawer>
     </div>
   );
