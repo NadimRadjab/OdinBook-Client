@@ -9,14 +9,22 @@ import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SearchUsers from "./users/SearchUsers";
 import ChatBox from "./Chat/ChatBox";
+import { State } from "../redux/reducers";
+
 interface Props {
   classes: any;
-  props: any;
+  props?: any;
 }
-
-const Layout: FC<Props> = ({ props, classes }) => {
+// interface Chat {
+//   chat: { _id: string; participants: {}[] };
+// }
+const Layout: FC<Props> = ({ classes, props }): JSX.Element => {
   const isToken = !!localStorage.getItem("token");
-  const userLoading = useSelector((state: any) => state.auth.isLoading);
+  const userLoading = useSelector((state: State) => state.auth.isLoading);
+  const chats = useSelector((state: State) => state.conversation.chat);
+  const chatIsLoading = useSelector(
+    (state: State) => state.conversation.isLoading
+  );
 
   if (!isToken) {
     return <Redirect to="/login" />;
@@ -34,9 +42,17 @@ const Layout: FC<Props> = ({ props, classes }) => {
           <Route exact path="/:id" render={() => <ViewUser {...props} />} />
         </Switch>
       </main>
-      <div className={classes.chatBox}>
-        <ChatBox />
-      </div>
+      {chatIsLoading ? (
+        <div></div>
+      ) : (
+        <div className={classes.chatBox}>
+          {chats.map(
+            (chat: any): JSX.Element => (
+              <ChatBox key={chat._id} chat={chat} />
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 };

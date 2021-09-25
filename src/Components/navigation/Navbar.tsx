@@ -55,7 +55,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar() {
+interface Props {}
+
+const Navbar: React.FC<Props> = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -93,6 +95,6 @@ function Navbar() {
       </Drawer>
     </div>
   );
-}
+};
 
 export default Navbar;

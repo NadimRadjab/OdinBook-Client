@@ -115,11 +115,11 @@ const PostCard: FC<any> = ({ post }) => {
         action={
           !isAuthor ? null : (
             <div>
-              <IconButton>
-                <EditIcon onClick={handleUpdate} />
+              <IconButton onClick={handleUpdate}>
+                <EditIcon />
               </IconButton>
-              <IconButton aria-label="settings">
-                <DeleteIcon onClick={handleDelete} />
+              <IconButton onClick={handleDelete} aria-label="settings">
+                <DeleteIcon />
               </IconButton>
             </div>
           )
@@ -149,13 +149,15 @@ const PostCard: FC<any> = ({ post }) => {
         )}
       </CardContent>
       <CardActions className={classes.like}>
-        <IconButton aria-label="Like">
-          {isLiked ? (
-            <ThumbUpAltIcon color="primary" onClick={handleUnlike} />
-          ) : (
-            <ThumbUpAltOutlinedIcon onClick={handleLike} />
-          )}
-        </IconButton>
+        {isLiked ? (
+          <IconButton onClick={handleUnlike} aria-label="Like">
+            <ThumbUpAltIcon color="primary" />
+          </IconButton>
+        ) : (
+          <IconButton onClick={handleLike} aria-label="Like">
+            <ThumbUpAltOutlinedIcon />
+          </IconButton>
+        )}
         {likes}
         <IconButton
           className={clsx(classes.expand, {

@@ -7,11 +7,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import { Divider } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/reducers";
 import { useHistory } from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import { getChat, getMessages } from "../../redux/actions/chat/chatActions";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -43,21 +43,32 @@ interface Friend {
   image: {
     url: string;
   }[];
+  chats: [];
 }
-const ChatList: React.FC = () => {
+interface Props {}
+const ChatList: React.FC<Props> = () => {
   const classes = useStyles();
   const user = useSelector((state: State) => state.mainUser.user);
   const isLoading = useSelector((state: State) => state.mainUser.isLoading);
-  const history = useHistory();
-  const viewProfile = (id: string) => {
-    if (id === user._id) return history.push(`/`);
-    history.push(`/${id}`);
+  const chats = useSelector((state: State) => state.conversation.chat);
+
+  const dispatch = useDispatch();
+  const isUserInChat = (userId: string) => {
+    for (let c of chats) {
+      if (c.participants.includes(userId)) return true;
+    }
+  };
+
+  const handleClick = (userId: string): void => {
+    if (chats.length === 3 || isUserInChat(userId)) return;
+
+    dispatch(getChat(userId));
   };
   const renderProfiles = () => {
     if (!user) return;
     return user.friendList.map((friend: Friend) => (
       <div className={classes.items} key={friend._id}>
-        <ListItem button>
+        <ListItem onClick={handleClick.bind(this, friend._id)} button>
           <ListItemAvatar>
             <Avatar alt={"Avatar"} src={friend.image[0].url} />
           </ListItemAvatar>

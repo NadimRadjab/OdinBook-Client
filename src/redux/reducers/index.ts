@@ -5,6 +5,7 @@ import postReducer from "./postReducer";
 import commentReducer from "./commentReducer";
 import usersReducer from "./usersReducer";
 import mainUser from "./user/userReducer";
+import chatReducer from "./chat/chatReducer";
 const reducers = combineReducers({
   auth: authReducer,
   mainUser: mainUser,
@@ -12,6 +13,7 @@ const reducers = combineReducers({
   posts: postReducer,
   comments: commentReducer,
   users: usersReducer,
+  conversation: chatReducer,
 });
 export default reducers;
 

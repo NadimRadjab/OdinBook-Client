@@ -1,15 +1,16 @@
 import { createStyles } from "@material-ui/core/styles";
 const styles = createStyles({
   root: {},
-  //   main: { gridRow: "2", gridColumn: "3" },
+
+  main: {},
   chatBox: {
     display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "flex-end",
     position: "fixed",
     top: "auto",
     bottom: 0,
-    width: "90%",
+    width: "95%",
   },
 });
 export default styles;

@@ -1,42 +1,39 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   createStyles,
   Theme,
   makeStyles,
   alpha,
 } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
-import Fab from "@material-ui/core/Fab";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import Avatar from "@material-ui/core/Avatar";
-import MenuIcon from "@material-ui/icons/Menu";
-import AddIcon from "@material-ui/icons/Add";
-import SearchIcon from "@material-ui/icons/Search";
-import MoreIcon from "@material-ui/icons/MoreVert";
+import CloseIcon from "@material-ui/icons/Close";
 import InputBase from "@material-ui/core/InputBase";
-
-import { Container, Divider } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
+import {
+  getMessages,
+  closeChat,
+  sendMessage,
+} from "../../redux/actions/chat/chatActions";
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../../redux/reducers";
+import Message from "./Message";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      //   right: 0,
+      margin: "1rem",
       width: "27%",
     },
     text: {
-      padding: theme.spacing(2, 2, 0),
+      padding: theme.spacing(1, 2, 0),
     },
     paper: {
-      height: "270px",
+      height: "300px",
       overflow: "auto",
     },
     header: {
@@ -45,7 +42,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
     },
     list: {
-      //   marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
+      width: "85%",
     },
     subheader: {
       backgroundColor: theme.palette.background.paper,
@@ -76,79 +74,115 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create("width"),
       width: "100%",
       [theme.breakpoints.up("md")]: {
-        width: "20ch",
+        width: "23ch",
       },
     },
   })
 );
+interface Props {
+  chat: {
+    _id: string;
+    participants: [];
+  };
+}
+interface Message {
+  _id: string;
+  sender: string;
+  chatId: string;
+  createdAt: Date;
+  message: string;
+}
 
-const ChatBox = () => {
+const ChatBox: React.FC<Props> = ({ chat }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const messages = useSelector((state: State) => state.conversation.messages);
+  const currentUser = useSelector((state: State) => state.mainUser.user);
+  const [message, setMessage] = useState("");
+  const forumEl = useRef<HTMLFormElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (
+      messages.some(
+        (message: { chatId: string }) => message.chatId === chat._id
+      )
+    )
+      return;
+
+    dispatch(getMessages(chat._id));
+  }, [dispatch]);
+
+  const isUser: any[] = chat.participants.filter(
+    (p: { _id: string }) => p._id !== currentUser._id
+  );
+  const handelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(e.target.value);
+  };
+  const onEnterPress = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (e.code === "Enter") {
+      e.preventDefault();
+      forumEl.current?.submit();
+    }
+  };
+
+  const handelSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newObj = {
+      message,
+      chatId: chat._id,
+      userId: isUser[0]._id,
+    };
+    dispatch(sendMessage(newObj));
+    setMessage("");
+  };
+  const handleCloseChat = () => {
+    dispatch(closeChat(chat._id));
+  };
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className={classes.root}>
       <Paper square className={classes.paper}>
         <div className={classes.header}>
-          <Avatar alt="Profile Picture" />
-          <Typography className={classes.text} variant="h5" gutterBottom>
-            Name
+          <Avatar src={isUser[0].image[0].url} alt="Profile Picture" />
+          <Typography className={classes.text} variant="h6" gutterBottom>
+            {isUser[0].fullName}
           </Typography>
         </div>
         <Divider />
         <List className={classes.list}>
-          <React.Fragment key={1}>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar alt="Profile Picture" />
-              </ListItemAvatar>
-              <ListItemText />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar alt="Profile Picture" />
-              </ListItemAvatar>
-              <ListItemText />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar alt="Profile Picture" />
-              </ListItemAvatar>
-              <ListItemText />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar alt="Profile Picture" />
-              </ListItemAvatar>
-              <ListItemText />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar alt="Profile Picture" />
-              </ListItemAvatar>
-              <ListItemText />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar alt="Profile Picture" />
-              </ListItemAvatar>
-              <ListItemText />
-            </ListItem>
-          </React.Fragment>
+          {messages
+            .filter(
+              (message: { chatId: string }) => message.chatId === chat._id
+            )
+            .map((message: Message) => (
+              <div ref={scrollRef}>
+                <Message
+                  currentUser={currentUser._id}
+                  key={message._id}
+                  message={message}
+                />
+              </div>
+            ))}
         </List>
       </Paper>
       <div color="primary" className={classes.appBar}>
         <Toolbar>
           <div className={classes.search}>
-            <form>
+            <form ref={forumEl} onSubmit={handelSubmit}>
               <InputBase
+                multiline
+                onChange={handelChange}
+                onKeyDown={onEnterPress}
                 placeholder="Message..."
-                value=""
-                name="name"
+                value={message}
+                name="message"
                 type="text"
                 classes={{
                   root: classes.inputRoot,
@@ -158,8 +192,13 @@ const ChatBox = () => {
               />
             </form>
           </div>
-          <IconButton edge="start" color="inherit" aria-label="close drawer">
-            <MenuIcon />
+          <IconButton
+            onClick={handleCloseChat}
+            edge="start"
+            color="inherit"
+            aria-label="close drawer"
+          >
+            <CloseIcon />
           </IconButton>
         </Toolbar>
       </div>
