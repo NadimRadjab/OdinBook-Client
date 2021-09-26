@@ -8,7 +8,10 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { State } from "../../redux/reducers";
-import { removeUnreadMessages } from "../../redux/actions/chat/chatActions";
+import {
+  removeUnreadMessages,
+  removeUnreadSocketMessages,
+} from "../../redux/actions/chat/chatActions";
 
 interface Props extends WithStyles<typeof styles> {
   message: {
@@ -19,10 +22,16 @@ interface Props extends WithStyles<typeof styles> {
     message: string;
     classes?: WithStyles;
   };
+  userIcon: string;
   currentUser: string;
 }
 
-const Message: React.FC<Props> = ({ message, classes, currentUser }) => {
+const Message: React.FC<Props> = ({
+  userIcon,
+  message,
+  classes,
+  currentUser,
+}) => {
   const user = useSelector((state: State) => state.mainUser.user);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -32,8 +41,11 @@ const Message: React.FC<Props> = ({ message, classes, currentUser }) => {
         const newObj = {
           messages: m._id,
         };
-
-        dispatch(removeUnreadMessages(message.chatId, newObj));
+        if (!newObj.messages.includes("-")) {
+          dispatch(removeUnreadMessages(message.chatId, newObj));
+        } else {
+          dispatch(removeUnreadSocketMessages(newObj));
+        }
       }
     }
   }, [message]);
@@ -42,7 +54,7 @@ const Message: React.FC<Props> = ({ message, classes, currentUser }) => {
     <ListItem className={classes.listItem}>
       {message.sender !== user._id ? (
         <ListItemAvatar className={classes.avatar}>
-          <Avatar alt="Profile Picture" />
+          <Avatar src={userIcon} alt="Profile Picture" />
         </ListItemAvatar>
       ) : null}
 

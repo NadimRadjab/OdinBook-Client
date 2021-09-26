@@ -12,7 +12,11 @@ import {
   SEND_INVITE,
   REMOVE_FRIEND,
 } from "../../actions/user/types";
-import { REMOVE_UNREAD_MESSAGES } from "../../actions/chat/types";
+import {
+  ADD_SOCKET_MESSAGE,
+  REMOVE_UNREAD_MESSAGES,
+  REMOVE_UNREAD_SOCKET_MESSAGES,
+} from "../../actions/chat/types";
 
 interface MainUserState {
   isLoading: boolean;
@@ -96,7 +100,25 @@ export default function (state = initialState, action: any) {
           ),
         },
       };
+    case ADD_SOCKET_MESSAGE:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          unreadMessages: [...state.user.unreadMessages, action.payload],
+        },
+      };
     case REMOVE_UNREAD_MESSAGES:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          unreadMessages: state.user.unreadMessages.filter(
+            (message: { _id: string }) => message._id !== action.payload
+          ),
+        },
+      };
+    case REMOVE_UNREAD_SOCKET_MESSAGES:
       return {
         ...state,
         user: {

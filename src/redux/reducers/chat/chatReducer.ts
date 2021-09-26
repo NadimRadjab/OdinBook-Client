@@ -4,6 +4,7 @@ import {
   GET_MESSAGES,
   CLOSE_CHAT,
   SEND_MESSAGE,
+  ADD_SOCKET_MESSAGE,
 } from "../../actions/chat/types";
 interface ChatState {
   chat: {
@@ -12,6 +13,7 @@ interface ChatState {
   messages: {
     chatId: string;
   }[];
+
   isLoading: boolean;
 }
 const initialState: ChatState = {
@@ -25,15 +27,17 @@ export default function (state = initialState, action: any) {
     case GET_CHAT:
       return {
         ...state,
-        chat: [...action.payload, ...state.chat],
+        chat: [...state.chat, ...action.payload],
         isLoading: false,
       };
     case GET_MESSAGES:
       return {
         ...state,
-        messages: [...state.messages, ...action.payload],
+        messages: [...action.payload, ...state.messages].reverse(),
       };
+
     case SEND_MESSAGE:
+    case ADD_SOCKET_MESSAGE:
       return {
         ...state,
         messages: [...state.messages, action.payload],

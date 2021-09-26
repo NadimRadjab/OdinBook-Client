@@ -5,6 +5,8 @@ import {
   GET_MESSAGES,
   SEND_MESSAGE,
   REMOVE_UNREAD_MESSAGES,
+  ADD_SOCKET_MESSAGE,
+  REMOVE_UNREAD_SOCKET_MESSAGES,
 } from "./types";
 import axios from "axios";
 import { Dispatch } from "redux";
@@ -88,13 +90,25 @@ export const removeUnreadMessages =
       .then((res) =>
         dispatch({
           type: REMOVE_UNREAD_MESSAGES,
-          payload: res.data,
+          payload: newObj.messages,
         })
       )
       .catch((err) => {
         console.log(err);
       });
   };
+export const removeUnreadSocketMessages = (newObj: { messages: string }) => {
+  return {
+    type: REMOVE_UNREAD_SOCKET_MESSAGES,
+    payload: newObj.messages,
+  };
+};
+export const addSocketMessage = (message: {} | null) => {
+  return {
+    type: ADD_SOCKET_MESSAGE,
+    payload: message,
+  };
+};
 
 const chatLoading = () => {
   return {

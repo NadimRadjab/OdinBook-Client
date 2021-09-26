@@ -22,6 +22,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
 import Message from "./Message";
+import { uuid } from "uuidv4";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -91,6 +92,10 @@ interface Props {
     _id: string;
     participants: [];
   };
+  handleSocketMessage: (
+    message: { message: string; chatId: string; sender: string },
+    reciverId: string
+  ) => void;
 }
 interface Message {
   _id: string;
@@ -100,13 +105,12 @@ interface Message {
   message: string;
 }
 
-const ChatBox: React.FC<Props> = ({ chat }) => {
+const ChatBox: React.FC<Props> = ({ chat, handleSocketMessage }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const messages = useSelector((state: State) => state.conversation.messages);
   const currentUser = useSelector((state: State) => state.mainUser.user);
   const [message, setMessage] = useState("");
-
   const scrollRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -136,12 +140,23 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
 
   const handelSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const newObj = {
       message,
       chatId: chat._id,
       userId: isUser[0]._id,
     };
     dispatch(sendMessage(newObj));
+    let socketObj = {
+      _id: uuid(),
+      message,
+      sender: currentUser._id,
+      chatId: chat._id,
+      createdAt: Date.now(),
+    };
+
+    handleSocketMessage(socketObj, isUser[0]._id);
+
     setMessage("");
   };
   const handleCloseChat = () => {
@@ -171,8 +186,9 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
               (message: { chatId: string }) => message.chatId === chat._id
             )
             .map((message: Message) => (
-              <div key={message._id} ref={scrollRef}>
+              <div ref={scrollRef} key={message._id}>
                 <Message
+                  userIcon={isUser[0].image[0].url}
                   currentUser={currentUser._id}
                   key={message._id}
                   message={message}
