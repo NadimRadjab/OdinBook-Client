@@ -11,7 +11,7 @@ import { useEffect } from "react";
 function App(props: any) {
   useEffect(() => {
     store.dispatch(loadUser());
-  }, [store.dispatch]);
+  }, []);
   return (
     <Provider store={store}>
       <div className="App">

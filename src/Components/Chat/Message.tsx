@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../../styles/MessageStyles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -8,6 +8,7 @@ import { withStyles, WithStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { State } from "../../redux/reducers";
+import { removeUnreadMessages } from "../../redux/actions/chat/chatActions";
 
 interface Props extends WithStyles<typeof styles> {
   message: {
@@ -23,6 +24,19 @@ interface Props extends WithStyles<typeof styles> {
 
 const Message: React.FC<Props> = ({ message, classes, currentUser }) => {
   const user = useSelector((state: State) => state.mainUser.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!message) return;
+    for (let m of user.unreadMessages) {
+      if (message._id === m._id) {
+        const newObj = {
+          messages: m._id,
+        };
+
+        dispatch(removeUnreadMessages(message.chatId, newObj));
+      }
+    }
+  }, [message]);
 
   return (
     <ListItem className={classes.listItem}>

@@ -66,7 +66,7 @@ const Navbar: React.FC<Props> = () => {
     setOpen(true);
   };
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = (): void => {
     setOpen(false);
   };
   return (
@@ -91,7 +91,7 @@ const Navbar: React.FC<Props> = () => {
           </IconButton>
         </div>
         <Divider />
-        <ChatList />
+        <ChatList handleDrawerClose={handleDrawerClose} />
       </Drawer>
     </div>
   );

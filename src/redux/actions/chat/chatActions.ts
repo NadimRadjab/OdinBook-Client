@@ -4,6 +4,7 @@ import {
   CLOSE_CHAT,
   GET_MESSAGES,
   SEND_MESSAGE,
+  REMOVE_UNREAD_MESSAGES,
 } from "./types";
 import axios from "axios";
 import { Dispatch } from "redux";
@@ -67,6 +68,26 @@ export const sendMessage =
       .then((res) =>
         dispatch({
           type: SEND_MESSAGE,
+          payload: res.data,
+        })
+      )
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+export const removeUnreadMessages =
+  (chatId: string, newObj: { messages: string }) =>
+  (dispatch: Dispatch, getState: () => State) => {
+    const token = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .put(`${process.env.REACT_APP_URL}chat/${chatId}/messages`, newObj, token)
+      .then((res) =>
+        dispatch({
+          type: REMOVE_UNREAD_MESSAGES,
           payload: res.data,
         })
       )

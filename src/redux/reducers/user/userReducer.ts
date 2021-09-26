@@ -12,6 +12,7 @@ import {
   SEND_INVITE,
   REMOVE_FRIEND,
 } from "../../actions/user/types";
+import { REMOVE_UNREAD_MESSAGES } from "../../actions/chat/types";
 
 interface MainUserState {
   isLoading: boolean;
@@ -92,6 +93,16 @@ export default function (state = initialState, action: any) {
           ...state.user,
           friendList: state.user.friendList.filter(
             (friend: { _id: string }) => friend._id !== action.payload.friendId
+          ),
+        },
+      };
+    case REMOVE_UNREAD_MESSAGES:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          unreadMessages: state.user.unreadMessages.filter(
+            (message: { _id: string }) => message._id !== action.payload
           ),
         },
       };

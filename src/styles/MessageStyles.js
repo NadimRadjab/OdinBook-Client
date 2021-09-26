@@ -9,7 +9,7 @@ const styles = createStyles({
     padding: "0.5rem",
     borderRadius: "10%",
     backgroundColor: (props) => {
-      return props.message.sender !== props.currentUser ? "#0084ff" : "gray";
+      return props.message.sender !== props.currentUser ? "#0084ff" : "#898F9C";
     },
   },
   avatar: {

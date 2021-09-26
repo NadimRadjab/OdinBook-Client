@@ -14,9 +14,10 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import ChatIcon from "@material-ui/icons/Chat";
 import FriendsInvites from "../main-user/FriendsInvites";
 import { logout } from "../../redux/actions/user/authActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { getUsers } from "../../redux/actions/usersActions";
+import { State } from "../../redux/reducers";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -91,7 +92,7 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const user = useSelector((state: State) => state.mainUser.user);
   const handleChange = (e: React.ChangeEvent<any>) => {
     setName(e.target.value);
   };
@@ -213,7 +214,10 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
               aria-label="show 0 new mails"
               color="inherit"
             >
-              <Badge badgeContent={0} color="secondary">
+              <Badge
+                badgeContent={!user ? 0 : user.unreadMessages.length}
+                color="secondary"
+              >
                 <ChatIcon />
               </Badge>
             </IconButton>

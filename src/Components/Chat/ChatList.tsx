@@ -6,12 +6,11 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import { Divider } from "@material-ui/core";
+import { Badge, Divider } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/reducers";
-import { useHistory } from "react-router";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { getChat, getMessages } from "../../redux/actions/chat/chatActions";
+import { getChat } from "../../redux/actions/chat/chatActions";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -45,8 +44,10 @@ interface Friend {
   }[];
   chats: [];
 }
-interface Props {}
-const ChatList: React.FC<Props> = () => {
+interface Props {
+  handleDrawerClose: () => void;
+}
+const ChatList: React.FC<Props> = ({ handleDrawerClose }) => {
   const classes = useStyles();
   const user = useSelector((state: State) => state.mainUser.user);
   const isLoading = useSelector((state: State) => state.mainUser.isLoading);
@@ -55,22 +56,38 @@ const ChatList: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const isUserInChat = (userId: string) => {
     for (let c of chats) {
-      if (c.participants.includes(userId)) return true;
+      return c.participants.some((p: { _id: string }) => p._id === userId);
     }
   };
-
+  const handleMessageNotifications = (userId: string) => {
+    let number = 0;
+    if (!user) return;
+    for (let m of user.unreadMessages) {
+      if (m.sender === userId) {
+        number++;
+      }
+    }
+    return number;
+  };
   const handleClick = (userId: string): void => {
     if (chats.length === 3 || isUserInChat(userId)) return;
 
     dispatch(getChat(userId));
+    handleDrawerClose();
   };
+  handleMessageNotifications("614aefafc5df82d0d9fda1d1");
   const renderProfiles = () => {
     if (!user) return;
     return user.friendList.map((friend: Friend) => (
       <div className={classes.items} key={friend._id}>
         <ListItem onClick={handleClick.bind(this, friend._id)} button>
           <ListItemAvatar>
-            <Avatar alt={"Avatar"} src={friend.image[0].url} />
+            <Badge
+              color="secondary"
+              badgeContent={handleMessageNotifications(friend._id)}
+            >
+              <Avatar alt={"Avatar"} src={friend.image[0].url} />
+            </Badge>
           </ListItemAvatar>
           <ListItemText id={friend._id} primary={`${friend.fullName} `} />
           <ListItemSecondaryAction></ListItemSecondaryAction>

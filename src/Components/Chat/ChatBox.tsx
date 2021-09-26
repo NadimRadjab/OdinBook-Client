@@ -26,18 +26,19 @@ import Message from "./Message";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      margin: "1rem",
+      margin: "0 1rem 0",
       width: "27%",
     },
     text: {
       padding: theme.spacing(1, 2, 0),
     },
     paper: {
-      height: "300px",
       overflow: "auto",
+      height: "300px",
     },
     header: {
       display: "flex",
+      backgroundColor: "white",
       margin: "1rem",
       alignItems: "center",
     },
@@ -60,6 +61,9 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: alpha(theme.palette.common.white, 0.15),
       "&:hover": {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
+      },
+      "&& button": {
+        display: "none",
       },
       marginRight: theme.spacing(4),
       marginLeft: 0,
@@ -102,8 +106,9 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
   const messages = useSelector((state: State) => state.conversation.messages);
   const currentUser = useSelector((state: State) => state.mainUser.user);
   const [message, setMessage] = useState("");
-  const forumEl = useRef<HTMLFormElement>(null);
+
   const scrollRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (
@@ -125,7 +130,7 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
   const onEnterPress = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (e.code === "Enter") {
       e.preventDefault();
-      forumEl.current?.submit();
+      buttonRef.current?.click();
     }
   };
 
@@ -146,11 +151,15 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  if (!chat) return <div></div>;
   return (
     <div className={classes.root}>
       <Paper square className={classes.paper}>
         <div className={classes.header}>
-          <Avatar src={isUser[0].image[0].url} alt="Profile Picture" />
+          <Avatar
+            src={!isUser ? null : isUser[0].image[0].url}
+            alt="Profile Picture"
+          />
           <Typography className={classes.text} variant="h6" gutterBottom>
             {isUser[0].fullName}
           </Typography>
@@ -162,7 +171,7 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
               (message: { chatId: string }) => message.chatId === chat._id
             )
             .map((message: Message) => (
-              <div ref={scrollRef}>
+              <div key={message._id} ref={scrollRef}>
                 <Message
                   currentUser={currentUser._id}
                   key={message._id}
@@ -175,7 +184,7 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
       <div color="primary" className={classes.appBar}>
         <Toolbar>
           <div className={classes.search}>
-            <form ref={forumEl} onSubmit={handelSubmit}>
+            <form onSubmit={handelSubmit}>
               <InputBase
                 multiline
                 onChange={handelChange}
@@ -190,6 +199,7 @@ const ChatBox: React.FC<Props> = ({ chat }) => {
                 }}
                 inputProps={{ "aria-label": "Message" }}
               />
+              <button ref={buttonRef} type="submit"></button>
             </form>
           </div>
           <IconButton
