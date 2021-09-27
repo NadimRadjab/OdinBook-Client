@@ -9,18 +9,16 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Typography, TextField, DialogTitle } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import styles from "../../styles/UpdatePhotoStyles";
-import { useSelector, useDispatch } from "react-redux";
-import { State } from "../../redux/reducers";
+import { useDispatch } from "react-redux";
 import {
   addPostImage,
   postLoading,
 } from "../../redux/actions/posts/postActions";
 const UploadImage: FC<any> = ({ classes }) => {
   const [open, setOpen] = useState(false);
-  const [img, setImg] = useState("");
-  const [file, setFile] = useState<any>(null);
+  const [img, setImg] = useState<null | string>(null);
+  const [file, setFile] = useState<null | string>(null);
   const dispatch = useDispatch();
-  const user = useSelector((state: State) => state.mainUser.user);
 
   const handleSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
@@ -71,7 +69,7 @@ const UploadImage: FC<any> = ({ classes }) => {
         </DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent className={classes.items} dividers>
-            <img src={img} alt="edit-photo-pic" />
+            {!img ? null : <img src={img} alt="upload" />}
 
             <Button startIcon={<CloudUploadIcon />} color="primary">
               <label htmlFor="image">Upload Photo</label>

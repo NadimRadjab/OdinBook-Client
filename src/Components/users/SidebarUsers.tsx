@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { withStyles } from "@material-ui/styles";
-import { Link } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Divider from "@material-ui/core/Divider";
 import styles from "../../styles/SideBarStyles";
@@ -37,6 +36,12 @@ const SidebarUsers: FC<any> = ({ classes }) => {
       return viewedUser._id === friend._id;
     });
   };
+  const checkMainUserInvites = () => {
+    if (!user) return;
+    return user.friendInvites.some((friend: Friend) => {
+      return viewedUser._id === friend._id;
+    });
+  };
 
   const checkFriendInvites = () => {
     if (!viewedUser) return;
@@ -55,12 +60,14 @@ const SidebarUsers: FC<any> = ({ classes }) => {
     dispatch(removeFriend(user._id, viewedUser._id));
   };
   const handleRequestButtons = (): JSX.Element => {
-    if (!checkFriendInvites()) {
+    if (!checkFriendInvites() && !checkMainUserInvites()) {
       return (
         <Button onClick={handleInvite} variant="contained" color="primary">
           Send a friend requst
         </Button>
       );
+    } else if (checkMainUserInvites()) {
+      return <div></div>;
     } else {
       return (
         <Button
@@ -89,7 +96,7 @@ const SidebarUsers: FC<any> = ({ classes }) => {
         <img
           className={classes.profilePic}
           src={!viewedUser.image ? "" : viewedUser.image[0].url}
-          alt="profile-pic"
+          alt="profile"
         />
         {!checkFriendList() ? handleRequestButtons() : null}
       </Container>
@@ -105,7 +112,7 @@ const SidebarUsers: FC<any> = ({ classes }) => {
               >
                 <img
                   src={!friend.image ? "" : friend.image[0].url}
-                  alt="friend-list-profile-image"
+                  alt="friend-list-profile"
                 />
                 <Typography>{friend.fullName}</Typography>
               </div>

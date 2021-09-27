@@ -1,7 +1,7 @@
 import "./App.css";
 
 import { Switch, Route } from "react-router-dom";
-import Layout from "./Components/Layout";
+import Main from "./Components/Main";
 import Login from "./Components/auth/Login";
 import store from "./redux/store";
 import { Provider } from "react-redux";
@@ -18,9 +18,11 @@ function App(props: any) {
         <Switch>
           <Route exact path="/login" render={() => <Login {...props} />} />{" "}
           <Route
+            exact
             path="/"
-            render={(routeProps) => <Layout {...props} {...routeProps} />}
+            render={(routeProps) => <Main {...props} {...routeProps} />}
           />
+          <Route render={(routeProps) => <Main {...props} {...routeProps} />} />
         </Switch>
       </div>
     </Provider>

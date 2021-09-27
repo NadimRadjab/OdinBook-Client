@@ -22,7 +22,7 @@ const ViewUser: FC<Props> = ({ classes }) => {
   useEffect(() => {
     dispatch(getUser(location.pathname));
     dispatch(getUserPosts(location.pathname));
-  }, [dispatch]);
+  }, [dispatch, location]);
 
   useEffect(() => {
     dispatch(getComments());
@@ -47,6 +47,5 @@ const ViewUser: FC<Props> = ({ classes }) => {
     </div>
   );
 };
-{
-}
+
 export default withStyles(styles)(ViewUser);

@@ -85,7 +85,6 @@ const PostCard: FC<any> = ({ post }) => {
   };
   const isAuthor = post.author._id === user._id;
 
-  const fullName = `${post.author.firstName} ${post.author.lastName}`;
   const isLiked = post.likes.some(
     (like: { author: string }) => like.author === user._id
   );
@@ -124,7 +123,7 @@ const PostCard: FC<any> = ({ post }) => {
             </div>
           )
         }
-        title={fullName}
+        title={post.author.fullName}
         subheader={new Date(post.date).toUTCString().substr(0, 17)}
       />
       {!post.image.length ? null : (

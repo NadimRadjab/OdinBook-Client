@@ -27,10 +27,6 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(null);
-  };
-
   const handleClose = (id: string) => {
     setAnchorEl(null);
     dispatch(removeFriendInvite(id));
@@ -47,7 +43,7 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
         <img
           className={classes.profilePic}
           src={invite.image[0].url}
-          alt="sender-image"
+          alt="sender"
         />
         <div className={classes.buttons}>
           <Button

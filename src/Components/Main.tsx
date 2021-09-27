@@ -12,6 +12,7 @@ import ChatBox from "./Chat/ChatBox";
 import { State } from "../redux/reducers";
 import { io, Socket } from "socket.io-client";
 import { addSocketMessage } from "../redux/actions/chat/chatActions";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface Props {
   classes: any;
@@ -21,7 +22,7 @@ interface Props {
 interface ISocket extends Socket {
   socket?: {};
 }
-const Layout: FC<Props> = ({ classes, props }): JSX.Element => {
+const Main: FC<Props> = ({ classes, props }): JSX.Element => {
   const isToken = !!localStorage.getItem("token");
   const userLoading = useSelector((state: State) => state.auth.isLoading);
   const currentUser = useSelector((state: State) => state.mainUser.user);
@@ -44,7 +45,7 @@ const Layout: FC<Props> = ({ classes, props }): JSX.Element => {
   useEffect(() => {
     if (!arrivalMessage) return;
     dispatch(addSocketMessage(arrivalMessage));
-  }, [arrivalMessage]);
+  }, [dispatch, arrivalMessage]);
 
   useEffect(() => {
     if (!currentUser) return;
@@ -65,7 +66,12 @@ const Layout: FC<Props> = ({ classes, props }): JSX.Element => {
     return <Redirect to="/login" />;
   }
 
-  if (userLoading) return <div></div>;
+  if (userLoading)
+    return (
+      <div className="loading">
+        <CircularProgress />
+      </div>
+    );
 
   return (
     <div className={classes.root}>
@@ -96,4 +102,4 @@ const Layout: FC<Props> = ({ classes, props }): JSX.Element => {
     </div>
   );
 };
-export default withStyles(styles)(Layout);
+export default withStyles(styles)(Main);

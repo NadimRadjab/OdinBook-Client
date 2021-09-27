@@ -28,7 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       margin: "0 1rem 0",
-      width: "27%",
+      width: "370px",
+      pointerEvents: "auto",
     },
     text: {
       padding: theme.spacing(1, 2, 0),
@@ -97,7 +98,7 @@ interface Props {
     reciverId: string
   ) => void;
 }
-interface Message {
+interface IMessage {
   _id: string;
   sender: string;
   chatId: string;
@@ -115,15 +116,15 @@ const ChatBox: React.FC<Props> = ({ chat, handleSocketMessage }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (
-      messages.some(
-        (message: { chatId: string }) => message.chatId === chat._id
-      )
-    )
-      return;
+    // if (
+    //   messages.some(
+    //     (message: { chatId: string }) => message.chatId === chat._id
+    //   )
+    // )
+    //   return;
 
     dispatch(getMessages(chat._id));
-  }, [dispatch]);
+  }, [dispatch, chat._id]);
 
   const isUser: any[] = chat.participants.filter(
     (p: { _id: string }) => p._id !== currentUser._id
@@ -185,7 +186,7 @@ const ChatBox: React.FC<Props> = ({ chat, handleSocketMessage }) => {
             .filter(
               (message: { chatId: string }) => message.chatId === chat._id
             )
-            .map((message: Message) => (
+            .map((message: IMessage) => (
               <div ref={scrollRef} key={message._id}>
                 <Message
                   userIcon={isUser[0].image[0].url}

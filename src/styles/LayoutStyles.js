@@ -7,6 +7,7 @@ const styles = createStyles({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-end",
+    pointerEvents: "none",
     position: "fixed",
     top: "auto",
     bottom: 0,

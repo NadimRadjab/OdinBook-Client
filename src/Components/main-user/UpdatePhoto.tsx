@@ -16,14 +16,14 @@ import { State } from "../../redux/reducers";
 
 const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
   const [open, setOpen] = useState(false);
-  const [img, setImg] = useState("");
-  const [file, setFile] = useState<any>(null);
+  const [img, setImg] = useState<null | string>(null);
+  const [file, setFile] = useState<string | null>(null);
   const dispatch = useDispatch();
   const user = useSelector((state: State) => state.mainUser.user);
 
   useEffect(() => {
     setImg(user.image[0].profile);
-  }, []);
+  }, [user.image]);
   const handleSubmit = (e: React.ChangeEvent<any>) => {
     e.preventDefault();
     if (!file) return;
@@ -49,7 +49,7 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
   };
 
   return (
-    <div className={classes.root}>
+    <div style={{ justifyContent: "center" }} className={classes.root}>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Edit Photo
       </Button>
@@ -61,7 +61,6 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
       >
         <DialogTitle>
           <Typography variant="h6">Edit Photo</Typography>
-
           <IconButton
             aria-label="close"
             className={classes.closeButton}
@@ -72,7 +71,11 @@ const UpdatePhoto: FC<any> = ({ classes, setImage }) => {
         </DialogTitle>
         <form onSubmit={handleSubmit}>
           <DialogContent className={classes.items} dividers>
-            <img src={img} alt="edit-photo-pic" />
+            {!img ? (
+              <img src={user.image[0].url} alt="edit" />
+            ) : (
+              <img src={img} alt="edit" />
+            )}
 
             <Button startIcon={<CloudUploadIcon />} color="primary">
               <label htmlFor="image">Upload Photo</label>

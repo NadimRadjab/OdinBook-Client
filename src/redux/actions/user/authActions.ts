@@ -1,7 +1,4 @@
 import {
-  USER_LOADED,
-  USER_LOADING,
-  AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   REGISTER_FAIL,
@@ -68,7 +65,7 @@ export const login =
     };
     const body = JSON.stringify({ email, password });
     axios
-      .post("http://localhost:5000/api/user/login", body, config)
+      .post(`${process.env.REACT_APP_URL}user/login`, body, config)
       .then((res) =>
         dispatch({
           type: LOGIN_SUCCESS,

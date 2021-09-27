@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { returnErros } from "./errorActions";
 import {
   GET_USERS,
   LOAD_USERS,

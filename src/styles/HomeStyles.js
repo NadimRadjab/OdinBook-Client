@@ -3,7 +3,7 @@ const styles = createStyles({
   root: {
     height: "90vh",
     display: "grid",
-    gridTemplateColumns: "35% 65% ",
+    gridTemplateColumns: "30% 65% ",
   },
   card: {
     display: "flex",

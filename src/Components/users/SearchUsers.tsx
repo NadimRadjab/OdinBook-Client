@@ -6,7 +6,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import { Button, Divider } from "@material-ui/core";
+import { Button, Divider, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
 import { useHistory } from "react-router";
@@ -57,6 +57,14 @@ const SearchUsers: React.FC = () => {
     history.push(`/${id}`);
   };
   const renderProfiles = () => {
+    if (!profiles.length)
+      return (
+        <div className="loading">
+          <Typography color="primary" variant="h4">
+            User not found...
+          </Typography>
+        </div>
+      );
     return profiles.map((profile: Profile) => (
       <div key={profile._id}>
         <ListItem>
@@ -65,9 +73,6 @@ const SearchUsers: React.FC = () => {
           </ListItemAvatar>
           <ListItemText id={profile._id} primary={`${profile.fullName} `} />
           <ListItemSecondaryAction>
-            <Button variant="contained" color="primary">
-              Send a friend request
-            </Button>
             <Button
               onClick={viewProfile.bind(this, profile._id)}
               variant="contained"
@@ -84,7 +89,7 @@ const SearchUsers: React.FC = () => {
 
   if (profilesLoading)
     return (
-      <div className={classes.loading}>
+      <div className="loading">
         <CircularProgress />
       </div>
     );

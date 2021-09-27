@@ -27,7 +27,7 @@ const Home: FC<Props> = ({ classes }) => {
 
   if (userLoading)
     return (
-      <div>
+      <div className="loading">
         <CircularProgress />
       </div>
     );

@@ -47,11 +47,9 @@ const useStyles = makeStyles((theme: Theme) =>
 const Comment: FC<any> = ({ comment, postId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [checked, setChecked] = React.useState(true);
 
   const handleDelete = () => {
     dispatch(deleteComment(postId, comment._id));
-    setChecked(false);
   };
   return (
     <List className={classes.root}>

@@ -48,7 +48,7 @@ const Message: React.FC<Props> = ({
         }
       }
     }
-  }, [message]);
+  }, [dispatch, message, user.unreadMessages]);
 
   return (
     <ListItem className={classes.listItem}>

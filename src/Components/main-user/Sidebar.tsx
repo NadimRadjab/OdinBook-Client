@@ -26,7 +26,7 @@ const Sidebar: FC<Props> = ({ classes }) => {
   useEffect(() => {
     if (!user) return;
     setImg(user.image[0].url);
-  }, []);
+  }, [user]);
   const setProfilePic = (image: string) => {
     setImg(image);
   };
