@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
+import { State } from "../reducers";
 import {
   GET_USERS,
   LOAD_USERS,
@@ -10,7 +11,7 @@ import {
 } from "./types";
 
 export const getUsers =
-  (name: string) => async (dispatch: Dispatch, getState: any) => {
+  (name: string) => async (dispatch: Dispatch, getState: () => State) => {
     try {
       const config = {
         headers: {
@@ -31,7 +32,7 @@ export const getUsers =
     }
   };
 export const getUser =
-  (id: string) => async (dispatch: Dispatch, getState: any) => {
+  (id: string) => async (dispatch: Dispatch, getState: () => State) => {
     try {
       const config = {
         headers: {
@@ -49,7 +50,7 @@ export const getUser =
     }
   };
 export const getUserPosts =
-  (id: string) => async (dispatch: Dispatch, getState: any) => {
+  (id: string) => async (dispatch: Dispatch, getState: () => State) => {
     try {
       const config = {
         headers: {
@@ -70,7 +71,7 @@ export const getUserPosts =
     }
   };
 export const updateImage =
-  (file: any) => async (dispatch: Dispatch, getState: any) => {
+  (file: any) => async (dispatch: Dispatch, getState: () => State) => {
     try {
       const config = {
         headers: {

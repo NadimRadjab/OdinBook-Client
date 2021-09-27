@@ -4,6 +4,7 @@ import {
   Theme,
   makeStyles,
   alpha,
+  withStyles,
 } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -23,71 +24,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
 import Message from "./Message";
 import { uuid } from "uuidv4";
+import styles from "../../styles/chat/ChatBoxStyles";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      margin: "0 1rem 0",
-      width: "370px",
-      pointerEvents: "auto",
-    },
-    text: {
-      padding: theme.spacing(1, 2, 0),
-    },
-    paper: {
-      overflow: "auto",
-      height: "300px",
-    },
-    header: {
-      display: "flex",
-      backgroundColor: "white",
-      margin: "1rem",
-      alignItems: "center",
-    },
-    list: {
-      marginBottom: theme.spacing(1),
-      width: "85%",
-    },
-    subheader: {
-      backgroundColor: theme.palette.background.paper,
-    },
-    appBar: {
-      backgroundColor: "#3f50b5",
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    search: {
-      position: "relative",
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: alpha(theme.palette.common.white, 0.15),
-      "&:hover": {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-      },
-      "&& button": {
-        display: "none",
-      },
-      marginRight: theme.spacing(4),
-      marginLeft: 0,
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(1),
-        width: "auto",
-      },
-    },
-    inputRoot: {
-      color: "inherit",
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
-        width: "23ch",
-      },
-    },
-  })
-);
 interface Props {
   chat: {
     _id: string;
@@ -97,6 +35,7 @@ interface Props {
     message: { message: string; chatId: string; sender: string },
     reciverId: string
   ) => void;
+  classes: any;
 }
 interface IMessage {
   _id: string;
@@ -106,8 +45,7 @@ interface IMessage {
   message: string;
 }
 
-const ChatBox: React.FC<Props> = ({ chat, handleSocketMessage }) => {
-  const classes = useStyles();
+const ChatBox: React.FC<Props> = ({ classes, chat, handleSocketMessage }) => {
   const dispatch = useDispatch();
   const messages = useSelector((state: State) => state.conversation.messages);
   const currentUser = useSelector((state: State) => state.mainUser.user);
@@ -233,4 +171,4 @@ const ChatBox: React.FC<Props> = ({ chat, handleSocketMessage }) => {
   );
 };
 
-export default ChatBox;
+export default withStyles(styles)(ChatBox);

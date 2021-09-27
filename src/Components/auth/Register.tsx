@@ -11,7 +11,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import styles from "../../styles/RegisterStyles";
+import styles from "../../styles/auth/RegisterStyles";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import { register } from "../../redux/actions/user/authActions";

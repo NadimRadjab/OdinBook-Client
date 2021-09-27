@@ -13,6 +13,7 @@ import {
   POSTS_LOADED,
 } from "./types";
 import { LIKE_USER_POST, UNLIKE_USER_POST } from "../types";
+import { State } from "../../reducers";
 
 interface Post {
   _id: string;
@@ -25,7 +26,7 @@ interface Post {
   };
 }
 
-export const getPosts = () => (dispatch: Dispatch, getState: any) => {
+export const getPosts = () => (dispatch: Dispatch, getState: () => State) => {
   dispatch(postLoading());
 
   const token = {
@@ -45,26 +46,27 @@ export const getPosts = () => (dispatch: Dispatch, getState: any) => {
       dispatch(returnErros(err.response.data, err.response.status));
     });
 };
-export const addPost = (post: Post) => (dispatch: Dispatch, getState: any) => {
-  const token = {
-    headers: {
-      Authorization: getState().auth.token,
-    },
+export const addPost =
+  (post: Post) => (dispatch: Dispatch, getState: () => State) => {
+    const token = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .post(`${process.env.REACT_APP_URL}posts`, post, token)
+      .then((res) =>
+        dispatch({
+          type: ADD_POST,
+          payload: res.data,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+      });
   };
-  axios
-    .post(`${process.env.REACT_APP_URL}posts`, post, token)
-    .then((res) =>
-      dispatch({
-        type: ADD_POST,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErros(err.response.data, err.response.status));
-    });
-};
 export const addPostImage =
-  (file: any) => (dispatch: Dispatch, getState: any) => {
+  (file: any) => (dispatch: Dispatch, getState: () => State) => {
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -84,7 +86,7 @@ export const addPostImage =
       });
   };
 export const updatePost =
-  (id: string, text: any) => (dispatch: Dispatch, getState: any) => {
+  (id: string, text: any) => (dispatch: Dispatch, getState: () => State) => {
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -103,7 +105,7 @@ export const updatePost =
       });
   };
 export const deletePost =
-  (id: string) => (dispatch: Dispatch, getState: any) => {
+  (id: string) => (dispatch: Dispatch, getState: () => State) => {
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -121,31 +123,32 @@ export const deletePost =
         dispatch(returnErros(err.response.data, err.response.status));
       });
   };
-export const likePost = (id: string) => (dispatch: Dispatch, getState: any) => {
-  const token = {
-    headers: {
-      Authorization: getState().auth.token,
-    },
+export const likePost =
+  (id: string) => (dispatch: Dispatch, getState: () => State) => {
+    const token = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .post(`${process.env.REACT_APP_URL}posts/${id}/like`, id, token)
+      .then((res) => [
+        dispatch({
+          type: LIKE_POST,
+          payload: { like: res.data, id },
+        }),
+        dispatch({
+          type: LIKE_USER_POST,
+          payload: { like: res.data, id },
+        }),
+      ])
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+        console.log(err);
+      });
   };
-  axios
-    .post(`${process.env.REACT_APP_URL}posts/${id}/like`, id, token)
-    .then((res) => [
-      dispatch({
-        type: LIKE_POST,
-        payload: { like: res.data, id },
-      }),
-      dispatch({
-        type: LIKE_USER_POST,
-        payload: { like: res.data, id },
-      }),
-    ])
-    .catch((err) => {
-      dispatch(returnErros(err.response.data, err.response.status));
-      console.log(err);
-    });
-};
 export const unlikePost =
-  (id: string) => (dispatch: Dispatch, getState: any) => {
+  (id: string) => (dispatch: Dispatch, getState: () => State) => {
     const token = {
       headers: {
         Authorization: getState().auth.token,

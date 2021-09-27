@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styles from "../../styles/MessageStyles";
+import styles from "../../styles/chat/MessageStyles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";

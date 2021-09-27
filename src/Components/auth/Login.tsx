@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { withStyles } from "@material-ui/styles";
 import useFormState from "../../hooks/useFormState";
-import styles from "../../styles/LoginStyles";
+import styles from "../../styles/auth/LoginStyles";
 import { Button, Paper } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";

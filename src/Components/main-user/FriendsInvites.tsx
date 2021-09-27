@@ -70,18 +70,14 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
   if (!user) return <div></div>;
   return (
     <div>
-      <List component="nav" aria-label="Device settings">
-        <ListItem
-          button
-          aria-haspopup="true"
-          aria-controls="lock-menu"
-          aria-label="when device is locked"
-          onClick={handleClickListItem}
-        >
-          <Badge badgeContent={user.friendInvites.length} color="secondary">
-            <PeopleIcon />
-          </Badge>
-        </ListItem>
+      <List
+        onClick={handleClickListItem}
+        component="nav"
+        aria-label="Device settings"
+      >
+        <Badge badgeContent={user.friendInvites.length} color="secondary">
+          <PeopleIcon />
+        </Badge>
       </List>
       <Menu
         id="lock-menu"

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { alpha, makeStyles } from "@material-ui/core/styles";
+import { withStyles, WithStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,7 +9,6 @@ import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import ChatIcon from "@material-ui/icons/Chat";
 import FriendsInvites from "../main-user/FriendsInvites";
@@ -18,85 +17,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { getUsers } from "../../redux/actions/usersActions";
 import { State } from "../../redux/reducers";
+import styles from "../../styles/navigation/NavbarItemsStyles";
+import ProfileMenu from "./ProfileMenu";
 
-const useStyles = makeStyles((theme) => ({
-  grow: {
-    flexGrow: 1,
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(3),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
-    },
-  },
-
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-  sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
-    },
-  },
-  sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
-    },
-  },
-}));
-interface Props {
+interface Props extends WithStyles<typeof styles> {
   openDrawer: any;
+  classes: any;
 }
 
-const NavbarItems: FC<Props> = ({ openDrawer }) => {
-  const classes = useStyles();
+const NavbarItems: FC<Props> = ({ openDrawer, classes }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [name, setName] = React.useState("");
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
+    React.useState<null>(null);
 
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const user = useSelector((state: State) => state.mainUser.user);
-  const handleChange = (e: React.ChangeEvent<any>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
-  const handleSubmit = (e: React.ChangeEvent<any>) => {
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     history.push(`/s?name=${name}`);
     dispatch(getUsers(name));
@@ -142,22 +82,22 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
       onClose={handleMobileMenuClose}
     >
       <MenuItem onClick={openDrawer}>
-        <Badge badgeContent={4} color="secondary">
+        <Badge
+          badgeContent={!user ? 0 : user.unreadMessages.length}
+          color="secondary"
+        >
           <ChatIcon />
         </Badge>
 
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <Badge badgeContent={11} color="secondary">
-          <FriendsInvites />
-        </Badge>
-        <p>Notifications</p>
+        <FriendsInvites />
+        <p>Invites</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <AccountCircle />
-
-        <p>profile</p>
+        <ProfileMenu handleLogout={handleLogout} />
+        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -196,19 +136,10 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleLogout}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-            <IconButton aria-label="show 0 new notifications" color="inherit">
-              <FriendsInvites />
-            </IconButton>
+            <ProfileMenu handleLogout={handleLogout} />
+
+            <FriendsInvites />
+
             <IconButton
               onClick={openDrawer}
               aria-label="show 0 new mails"
@@ -239,4 +170,4 @@ const NavbarItems: FC<Props> = ({ openDrawer }) => {
     </div>
   );
 };
-export default NavbarItems;
+export default withStyles(styles)(NavbarItems);

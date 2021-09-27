@@ -7,29 +7,31 @@ import {
 import axios from "axios";
 import { Dispatch } from "redux";
 import { returnErros } from "./errorActions";
+import { State } from "../reducers";
 
-export const getComments = () => (dispatch: Dispatch, getState: any) => {
-  dispatch(isCommentsLoading());
-  const token = {
-    headers: {
-      Authorization: getState().auth.token,
-    },
+export const getComments =
+  () => (dispatch: Dispatch, getState: () => State) => {
+    dispatch(isCommentsLoading());
+    const token = {
+      headers: {
+        Authorization: getState().auth.token,
+      },
+    };
+    axios
+      .get(`${process.env.REACT_APP_URL}posts/comments`, token)
+      .then((res) =>
+        dispatch({
+          type: GET_COMMENTS,
+          payload: res.data,
+        })
+      )
+      .catch((err) => {
+        dispatch(returnErros(err.response.data, err.response.status));
+      });
   };
-  axios
-    .get(`${process.env.REACT_APP_URL}posts/comments`, token)
-    .then((res) =>
-      dispatch({
-        type: GET_COMMENTS,
-        payload: res.data,
-      })
-    )
-    .catch((err) => {
-      dispatch(returnErros(err.response.data, err.response.status));
-    });
-};
 
 export const addComment =
-  (id: string, comment: any) => (dispatch: Dispatch, getState: any) => {
+  (id: string, comment: any) => (dispatch: Dispatch, getState: () => State) => {
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -48,7 +50,8 @@ export const addComment =
       });
   };
 export const deleteComment =
-  (id: string, commentId: string) => (dispatch: Dispatch, getState: any) => {
+  (id: string, commentId: string) =>
+  (dispatch: Dispatch, getState: () => State) => {
     const token = {
       headers: {
         Authorization: getState().auth.token,
