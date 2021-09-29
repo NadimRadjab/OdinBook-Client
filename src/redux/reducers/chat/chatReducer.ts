@@ -22,7 +22,21 @@ const initialState: ChatState = {
   isLoading: false,
 };
 
-export default function (state = initialState, action: any) {
+interface GetChat {
+  type: "GET_CHAT" | "SEND_MESSAGE" | "GET_MESSAGES" | "ADD_SOCKET_MESSAGE";
+  payload: {}[];
+}
+
+interface CloseChat {
+  type: "CLOSE_CHAT";
+  payload: string;
+}
+interface ChatLoading {
+  type: "CHAT_LOADING";
+}
+type Action = GetChat | CloseChat | ChatLoading;
+
+export default function (state = initialState, action: Action) {
   switch (action.type) {
     case GET_CHAT:
       return {

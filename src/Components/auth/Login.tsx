@@ -39,6 +39,13 @@ const Login: FC<Props> = ({
     };
     login(user);
   };
+  const handleTestUser = () => {
+    const user = {
+      email: "sim@gmail.com",
+      password: "1234test",
+    };
+    login(user);
+  };
   useEffect(() => {
     if (error.id === "LOGIN_FAIL") {
       setMessage(error.msg.info.message);
@@ -54,6 +61,7 @@ const Login: FC<Props> = ({
   }, [isAuthenticated, error, history]);
   return (
     <div className={classes.root}>
+      <h1 className={classes.title}>Odin Book</h1>
       <Paper>
         <ValidatorForm onSubmit={onSubmit} noValidate className={classes.form}>
           {!message ? null : (
@@ -90,6 +98,13 @@ const Login: FC<Props> = ({
           <div className={classes.buttons}>
             <Button variant="contained" color="primary" type="submit">
               Login
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleTestUser}
+            >
+              Test User
             </Button>
           </div>
           <Register {...props} errorMsg={msgRegister} />

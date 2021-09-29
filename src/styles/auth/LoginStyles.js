@@ -4,11 +4,26 @@ const styles = createStyles((theme) => ({
   root: {
     height: "100vh",
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     /* background by SVGBackgrounds.com */
     backgroundColor: "#003CB3",
     backgroundImage: `url(${bg})`,
+  },
+  title: {
+    fill: "#35322a",
+    color: "#fff",
+    fontFamily: "Playfair Display",
+    fontSize: " 120px",
+    letterSpacing: "-4px",
+    textTransform: "uppercase",
+    animation: "blur .75s ease-out infinite",
+    textShadow: "0px 0px 5px #fff, 0px 0px 7px #fff",
+    fontWeight: 900,
+    [theme.breakpoints.down("xs")]: {
+      fontSize: " 60px",
+    },
   },
   form: {
     width: 450,

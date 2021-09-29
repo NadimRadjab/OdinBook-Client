@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 function App(props: any) {
   useEffect(() => {
-    store.dispatch(loadUser());
+    store.dispatch<any>(loadUser());
   }, []);
   return (
     <Provider store={store}>

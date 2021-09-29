@@ -21,7 +21,23 @@ const initialState: AuthState = {
   isLoading: false,
 };
 
-export default function (state = initialState, action: any) {
+interface UserLoading {
+  type:
+    | "USER_LOADING"
+    | "USER_LOADED"
+    | "LOGIN_FAIL"
+    | "REGISTER_FAIL"
+    | "AUTH_ERROR"
+    | "LOGOUT_SUCCESS";
+}
+interface LoginRegister {
+  type: "LOGIN_SUCCESS" | "REGISTER_SUCCESS";
+  payload: { token: string };
+}
+
+type Action = UserLoading | LoginRegister;
+
+export default function (state = initialState, action: Action) {
   switch (action.type) {
     case USER_LOADING:
       return {
