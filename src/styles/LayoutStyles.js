@@ -1,6 +1,9 @@
 import { createStyles } from "@material-ui/core/styles";
 const styles = createStyles({
-  root: {},
+  root: {
+    width: "100%",
+    height: "100vh",
+  },
 
   main: {},
   chatBox: {

@@ -1,14 +1,14 @@
 import { FC, useEffect } from "react";
 import { getUser, getUserPosts } from "../../redux/actions/usersActions";
 import { useSelector, useDispatch } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
 import PostCard from "../posts/PostCard";
 import SidebarUsers from "./SidebarUsers";
-import styles from "../../styles/HomeStyles";
-import { withStyles } from "@material-ui/styles";
 import { getComments } from "../../redux/actions/commentActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { State } from "../../redux/reducers";
 import { useLocation } from "react-router-dom";
+import styles from "../../styles/HomeStyles";
 
 interface Props {
   classes: any;
@@ -30,7 +30,7 @@ const ViewUser: FC<Props> = ({ classes }) => {
 
   if (userLoading)
     return (
-      <div>
+      <div className="loading">
         <CircularProgress />
       </div>
     );

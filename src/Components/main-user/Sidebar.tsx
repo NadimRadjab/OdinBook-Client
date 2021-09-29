@@ -60,7 +60,7 @@ const Sidebar: FC<Props> = ({ classes }) => {
       </Container>
       <Divider />
       <div className={classes.viewFriends}>
-        <Link to="/">View friends</Link>
+        <Link to="/friends">View friends</Link>
       </div>
     </div>
   );

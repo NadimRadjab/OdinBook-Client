@@ -12,7 +12,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormLabel from "@material-ui/core/FormLabel";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import styles from "../../styles/auth/RegisterStyles";
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { register } from "../../redux/actions/user/authActions";
 
@@ -58,6 +58,7 @@ const Register: FC<Props> = ({ classes, register, errorMsg }) => {
         Register
       </Button>
       <Dialog
+        className={classes.root}
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
@@ -76,7 +77,7 @@ const Register: FC<Props> = ({ classes, register, errorMsg }) => {
               validators={["required"]}
               errorMessages={["First Name is not valid!"]}
               margin="dense"
-              label="firstName"
+              label="First Name"
               name="firstName"
               value={firstName}
               type="text"

@@ -1,11 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  createStyles,
-  Theme,
-  makeStyles,
-  alpha,
-  withStyles,
-} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -25,6 +19,7 @@ import { State } from "../../redux/reducers";
 import Message from "./Message";
 import { uuid } from "uuidv4";
 import styles from "../../styles/chat/ChatBoxStyles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface Props {
   chat: {
@@ -54,13 +49,6 @@ const ChatBox: React.FC<Props> = ({ classes, chat, handleSocketMessage }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    // if (
-    //   messages.some(
-    //     (message: { chatId: string }) => message.chatId === chat._id
-    //   )
-    // )
-    //   return;
-
     dispatch(getMessages(chat._id));
   }, [dispatch, chat._id]);
 
@@ -120,20 +108,26 @@ const ChatBox: React.FC<Props> = ({ classes, chat, handleSocketMessage }) => {
         </div>
         <Divider />
         <List className={classes.list}>
-          {messages
-            .filter(
-              (message: { chatId: string }) => message.chatId === chat._id
-            )
-            .map((message: IMessage) => (
-              <div ref={scrollRef} key={message._id}>
-                <Message
-                  userIcon={isUser[0].image[0].url}
-                  currentUser={currentUser._id}
-                  key={message._id}
-                  message={message}
-                />
-              </div>
-            ))}
+          {!messages.length ? (
+            <div className="loading">
+              <CircularProgress />
+            </div>
+          ) : (
+            messages
+              .filter(
+                (message: { chatId: string }) => message.chatId === chat._id
+              )
+              .map((message: IMessage) => (
+                <div ref={scrollRef} key={message._id}>
+                  <Message
+                    userIcon={isUser[0].image[0].url}
+                    currentUser={currentUser._id}
+                    key={message._id}
+                    message={message}
+                  />
+                </div>
+              ))
+          )}
         </List>
       </Paper>
       <div color="primary" className={classes.appBar}>

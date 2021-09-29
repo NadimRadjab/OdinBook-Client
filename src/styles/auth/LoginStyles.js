@@ -1,6 +1,6 @@
 import { createStyles } from "@material-ui/core/styles";
 import bg from "./bg.svg";
-const styles = createStyles({
+const styles = createStyles((theme) => ({
   root: {
     height: "100vh",
     display: "flex",
@@ -17,6 +17,10 @@ const styles = createStyles({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      width: 300,
+      height: 300,
+    },
   },
   inputs: {
     display: "flex",
@@ -25,6 +29,9 @@ const styles = createStyles({
     margin: "1rem",
     "&& .MuiTextField-root": {
       margin: "0.4rem",
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: 200,
     },
   },
   buttons: {
@@ -37,5 +44,5 @@ const styles = createStyles({
   alert: {
     width: "80%",
   },
-});
+}));
 export default styles;

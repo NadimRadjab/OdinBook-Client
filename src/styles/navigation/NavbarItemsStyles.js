@@ -30,7 +30,6 @@ const styles = createStyles((theme) => ({
   },
 
   title: {
-    display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
     },

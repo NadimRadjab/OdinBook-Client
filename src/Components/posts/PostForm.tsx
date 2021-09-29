@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -9,14 +9,20 @@ import useFormState from "../../hooks/useFormState";
 import { connect } from "react-redux";
 import { addPost } from "../../redux/actions/posts/postActions";
 import UploadImage from "./UploadImage";
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 550,
+    [theme.breakpoints.down("sm")]: {
+      width: 400,
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: 300,
+    },
   },
   addBtn: {
     width: 80,
   },
-});
+}));
 const PostForm: FC<any> = ({ addPost }) => {
   const classes = useStyles();
   const [text, setText, resetText] = useFormState("");

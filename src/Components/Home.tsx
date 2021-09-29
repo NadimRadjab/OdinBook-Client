@@ -1,14 +1,14 @@
 import { FC, useEffect } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import { getPosts } from "../redux/actions/posts/postActions";
 import { getComments } from "../redux/actions/commentActions";
 import { useSelector, useDispatch } from "react-redux";
 import PostCard from "./posts/PostCard";
 import Sidebar from "./main-user/Sidebar";
-import styles from "../styles/HomeStyles";
-import { withStyles } from "@material-ui/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PostForm from "./posts/PostForm";
 import { State } from "../redux/reducers";
+import styles from "../styles/HomeStyles";
 
 interface Props {
   classes: any;

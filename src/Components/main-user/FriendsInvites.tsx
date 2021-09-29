@@ -1,9 +1,8 @@
 import React, { FC } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 import PeopleIcon from "@material-ui/icons/People";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Menu from "@material-ui/core/Menu";
 import Button from "@material-ui/core/Button";
 import { Box, Container, Divider, Badge } from "@material-ui/core";
@@ -32,6 +31,7 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
     dispatch(removeFriendInvite(id));
   };
   const handleAccept = (id: string) => {
+    setAnchorEl(null);
     dispatch(acceptFriendInvite(id));
   };
 
@@ -67,7 +67,12 @@ const FriendsInvites: FC<Props> = ({ classes }) => {
       </Box>
     ));
   };
-  if (!user) return <div></div>;
+  if (!user)
+    return (
+      <div className="loading">
+        <CircularProgress />
+      </div>
+    );
   return (
     <div>
       <List

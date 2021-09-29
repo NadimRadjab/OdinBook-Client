@@ -1,18 +1,19 @@
 import React, { FC, useRef, useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
-import Navbar from "./navigation/Navbar";
-import Home from "./Home";
-import ViewUser from "./users/ViewUser";
 import { withStyles } from "@material-ui/styles";
 import styles from "../styles/LayoutStyles";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import SearchUsers from "./users/SearchUsers";
-import ChatBox from "./Chat/ChatBox";
 import { State } from "../redux/reducers";
 import { io, Socket } from "socket.io-client";
 import { addSocketMessage } from "../redux/actions/chat/chatActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Navbar from "./navigation/Navbar";
+import Home from "./Home";
+import SearchUsers from "./users/SearchUsers";
+import ChatBox from "./Chat/ChatBox";
+import ViewUser from "./users/ViewUser";
+import ViewFriends from "./main-user/ViewFriends";
 
 interface Props {
   classes: any;
@@ -33,9 +34,11 @@ const Main: FC<Props> = ({ classes, props }): JSX.Element => {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const socket = useRef<ISocket>();
   const dispatch = useDispatch();
+  const ws: string | undefined =
+    process.env.REACT_APP_PORT || " ws://localhost:8900";
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
+    socket.current = io(`${ws}`);
 
     socket.current?.on("getMessage", (data) => {
       setArrivalMessage(data.message);
@@ -81,6 +84,11 @@ const Main: FC<Props> = ({ classes, props }): JSX.Element => {
         <Switch>
           <Route exact path="/" render={() => <Home {...props} />} />
           <Route exact path="/s" render={() => <SearchUsers {...props} />} />
+          <Route
+            exact
+            path="/friends"
+            render={() => <ViewFriends {...props} />}
+          />
           <Route exact path="/:id" render={() => <ViewUser {...props} />} />
         </Switch>
       </main>

@@ -2,7 +2,6 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -51,28 +50,25 @@ interface Profile {
     url: string;
   }[];
 }
-const SearchUsers: React.FC = () => {
+const ViewFriends: React.FC = () => {
   const classes = useStyles();
-  const profiles = useSelector((state: State) => state.users.searchedUsers);
   const user = useSelector((state: State) => state.mainUser.user);
-  const profilesLoading = useSelector(
-    (state: State) => state.users.isUserLoading
-  );
+
   const history = useHistory();
   const viewProfile = (id: string) => {
     if (id === user._id) return history.push(`/`);
     history.push(`/${id}`);
   };
   const renderProfiles = () => {
-    if (!profiles.length)
+    if (!user.friendList.length)
       return (
         <div className="loading">
           <Typography color="primary" variant="h4">
-            User not found...
+            Friend list is empty...
           </Typography>
         </div>
       );
-    return profiles.map((profile: Profile) => (
+    return user.friendList.map((profile: Profile) => (
       <div key={profile._id}>
         <ListItem className={classes.items}>
           <ListItemAvatar>
@@ -93,7 +89,7 @@ const SearchUsers: React.FC = () => {
     ));
   };
 
-  if (profilesLoading)
+  if (!user)
     return (
       <div className="loading">
         <CircularProgress />
@@ -101,4 +97,4 @@ const SearchUsers: React.FC = () => {
     );
   return <List className={classes.root}>{renderProfiles()}</List>;
 };
-export default SearchUsers;
+export default ViewFriends;

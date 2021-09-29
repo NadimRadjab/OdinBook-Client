@@ -14,17 +14,15 @@ function App(props: any) {
   }, []);
   return (
     <Provider store={store}>
-      <div className="App">
-        <Switch>
-          <Route exact path="/login" render={() => <Login {...props} />} />{" "}
-          <Route
-            exact
-            path="/"
-            render={(routeProps) => <Main {...props} {...routeProps} />}
-          />
-          <Route render={(routeProps) => <Main {...props} {...routeProps} />} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/login" render={() => <Login {...props} />} />{" "}
+        <Route
+          exact
+          path="/"
+          render={(routeProps) => <Main {...props} {...routeProps} />}
+        />
+        <Route render={(routeProps) => <Main {...props} {...routeProps} />} />
+      </Switch>
     </Provider>
   );
 }

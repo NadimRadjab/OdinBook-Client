@@ -1,9 +1,12 @@
 import { createStyles } from "@material-ui/core/styles";
-const styles = createStyles({
+const styles = createStyles((theme) => ({
   friendListContainer: {
     width: "400px",
     height: "250px",
     overflow: "auto",
+    [theme.breakpoints.down("xs")]: {
+      width: 300,
+    },
   },
   friendList: {
     height: "110px",
@@ -21,6 +24,6 @@ const styles = createStyles({
       margin: "0.5rem",
     },
   },
-});
+}));
 
 export default styles;

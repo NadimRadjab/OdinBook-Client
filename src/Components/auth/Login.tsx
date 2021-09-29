@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import useFormState from "../../hooks/useFormState";
-import styles from "../../styles/auth/LoginStyles";
 import { Button, Paper } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -10,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import { login } from "../../redux/actions/user/authActions";
 import { clearErros } from "../../redux/actions/errorActions";
 import { connect } from "react-redux";
+import styles from "../../styles/auth/LoginStyles";
 
 interface Props {
   props: any;

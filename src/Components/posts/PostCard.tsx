@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -13,7 +13,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import { red } from "@material-ui/core/colors";
 import DeleteIcon from "@material-ui/icons/Delete";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import EditIcon from "@material-ui/icons/Edit";
@@ -30,34 +29,9 @@ import AddComment from "../comments/AddComment";
 import Comment from "../comments/Comment";
 import { State } from "../../redux/reducers";
 import { Divider } from "@material-ui/core";
+import style from "../../styles/posts/PostCardStyles";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: 550,
-      margin: "1.5rem",
-    },
-    media: {
-      height: "500px",
-    },
-    like: {
-      display: "flex",
-      justifyContent: "space-evenly",
-    },
-    expand: {
-      marginLeft: "auto",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-
-    avatar: {
-      backgroundColor: red[500],
-    },
-  })
-);
-const PostCard: FC<any> = ({ post }) => {
-  const classes = useStyles();
+const PostCard: FC<any> = ({ post, classes }) => {
   const [expanded, setExpanded] = useState(false);
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const dispatch = useDispatch();
@@ -187,4 +161,4 @@ const PostCard: FC<any> = ({ post }) => {
     </Card>
   );
 };
-export default PostCard;
+export default withStyles(style)(PostCard);
