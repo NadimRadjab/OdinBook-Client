@@ -51,8 +51,59 @@ const initialState: UsersState = {
   isUserLoading: false,
   isPostsLoading: false,
 };
+interface GetUsers {
+  type: "GET_USERS" | "GET_USER";
+  payload: {}[];
+}
+interface GetUserPosts {
+  type: "GET_USER_POSTS";
+  payload: {}[];
+}
+interface SendInvite {
+  type: "SEND_INVITE";
+  payload: {};
+}
+interface CancelFriendRequest {
+  type: "CANCEL_FRIEND_REQUEST";
+  payload: string;
+}
+interface LoadUsesrs {
+  type: "LOAD_USERS" | "LOAD_USER_POSTS";
+}
+interface LikePost {
+  type: "LIKE_USER_POST";
+  payload: {
+    id: string;
+    like: string;
+  };
+}
+interface UnlikePost {
+  type: "UNLIKE_USER_POST";
+  payload: {
+    id: string;
+    likeId: string;
+  };
+}
+interface AcceptInvite {
+  type: "ACCEPT_INVITE";
+  payload: { user: {} };
+}
+interface RemoveFriend {
+  type: "REMOVE_FRIEND";
+  payload: { id: string };
+}
+type Action =
+  | GetUsers
+  | GetUserPosts
+  | CancelFriendRequest
+  | SendInvite
+  | LoadUsesrs
+  | LikePost
+  | AcceptInvite
+  | RemoveFriend
+  | UnlikePost;
 
-export default function (state = initialState, action: any) {
+export default function (state = initialState, action: Action) {
   switch (action.type) {
     case LOAD_USERS:
       return {
@@ -93,6 +144,7 @@ export default function (state = initialState, action: any) {
             return { ...post, likes: newArr };
           } else return post;
         }),
+        isPostsLoading: false,
       };
     case UNLIKE_USER_POST:
       return {
@@ -108,6 +160,7 @@ export default function (state = initialState, action: any) {
             return { ...post, likes: filterLike };
           } else return post;
         }),
+        isPostsLoading: false,
       };
     case SEND_INVITE:
       return {

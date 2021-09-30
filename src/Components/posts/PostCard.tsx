@@ -36,7 +36,7 @@ const PostCard: FC<any> = ({ post, classes }) => {
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const dispatch = useDispatch();
   const isCommentsLoading = useSelector(
-    (state: any) => state.comments.isLoading
+    (state: State) => state.comments.isLoading
   );
 
   const allComments = useSelector((state: any) => state.comments.comments);
@@ -48,7 +48,10 @@ const PostCard: FC<any> = ({ post, classes }) => {
   const handleDelete = () => {
     dispatch(deletePost(post._id));
   };
+
   const handleLike = () => {
+    if (post.likes.some((post: { author: string }) => post.author === user._id))
+      return;
     dispatch(likePost(post._id));
   };
   const handleUnlike = () => {

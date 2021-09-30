@@ -16,8 +16,11 @@ interface Props {
 
 const ViewUser: FC<Props> = ({ classes }) => {
   const dispatch = useDispatch();
-  const posts = useSelector((state: any) => state.users.posts);
+  const posts = useSelector((state: State) => state.users.posts);
   const userLoading = useSelector((state: State) => state.users.isUserLoading);
+  const postsLoading = useSelector(
+    (state: State) => state.users.isPostsLoading
+  );
   const location = useLocation();
   useEffect(() => {
     dispatch(getUser(location.pathname));
@@ -39,10 +42,13 @@ const ViewUser: FC<Props> = ({ classes }) => {
     <div className={classes.root}>
       <SidebarUsers />
       <div className={classes.card}>
-        <div className={classes.form}></div>
-        {posts === undefined
-          ? null
-          : posts.map((post: any) => <PostCard key={post._id} post={post} />)}
+        {postsLoading ? (
+          <div className="loading">
+            <CircularProgress />
+          </div>
+        ) : (
+          posts.map((post: any) => <PostCard key={post._id} post={post} />)
+        )}
       </div>
     </div>
   );

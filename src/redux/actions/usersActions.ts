@@ -91,7 +91,7 @@ export const updateImage =
       console.log(err);
     }
   };
-const loadPosts = () => {
+export const loadPosts = () => {
   return {
     type: LOAD_USER_POSTS,
   };

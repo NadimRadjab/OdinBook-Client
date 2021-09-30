@@ -36,7 +36,55 @@ const initialState: MainUserState = {
   user: null,
 };
 
-export default function (state = initialState, action: any) {
+interface UserLoading {
+  type:
+    | "USER_LOADING"
+    | "LOGIN_FAIL"
+    | "REGISTER_FAIL"
+    | "AUTH_ERROR"
+    | "LOGOUT_SUCCESS"
+    | "SEND_INVITE";
+}
+interface UserLoaded {
+  type: "USER_LOADED";
+  payload: {};
+}
+interface LoginRegister {
+  type: "LOGIN_SUCCESS" | "REGISTER_SUCCESS";
+  payload: { user: {} };
+}
+interface RemoveInvite {
+  type: "REMOVE_INVITE";
+  payload: string;
+}
+interface AcceptInvite {
+  type: "ACCEPT_INVITE";
+  payload: { friend: { _id: string } };
+}
+interface RemoveUndreadMessages {
+  type: "REMOVE_UNREAD_MESSAGES" | "REMOVE_UNREAD_SOCKET_MESSAGES";
+  payload: "string";
+}
+interface AddSocketMessage {
+  type: "ADD_SOCKET_MESSAGE";
+  payload: {};
+}
+interface RemoveFriend {
+  type: "REMOVE_FRIEND";
+  payload: { friendId: string };
+}
+
+type Action =
+  | UserLoading
+  | LoginRegister
+  | AddSocketMessage
+  | RemoveUndreadMessages
+  | AcceptInvite
+  | RemoveInvite
+  | UserLoaded
+  | RemoveFriend;
+
+export default function (state = initialState, action: Action) {
   switch (action.type) {
     case USER_LOADING:
       return {

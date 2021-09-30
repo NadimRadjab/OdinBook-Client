@@ -38,8 +38,12 @@ const styles = createStyles((theme) => ({
     "&:hover": {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
+
     "&& button": {
       display: "none",
+      [theme.breakpoints.down("xs")]: {
+        display: "block",
+      },
     },
     marginRight: theme.spacing(4),
     marginLeft: 0,
@@ -47,6 +51,11 @@ const styles = createStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(1),
       width: "auto",
+    },
+  },
+  forum: {
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
     },
   },
   inputRoot: {

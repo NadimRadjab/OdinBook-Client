@@ -14,6 +14,7 @@ import {
 } from "./types";
 import { LIKE_USER_POST, UNLIKE_USER_POST } from "../types";
 import { State } from "../../reducers";
+import { loadPosts } from "../usersActions";
 
 interface Post {
   _id: string;
@@ -48,6 +49,7 @@ export const getPosts = () => (dispatch: Dispatch, getState: () => State) => {
 };
 export const addPost =
   (post: Post) => (dispatch: Dispatch, getState: () => State) => {
+    dispatch(postLoading());
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -87,6 +89,7 @@ export const addPostImage =
   };
 export const updatePost =
   (id: string, text: any) => (dispatch: Dispatch, getState: () => State) => {
+    dispatch(postLoading());
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -106,6 +109,7 @@ export const updatePost =
   };
 export const deletePost =
   (id: string) => (dispatch: Dispatch, getState: () => State) => {
+    dispatch(postLoading());
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -125,6 +129,8 @@ export const deletePost =
   };
 export const likePost =
   (id: string) => (dispatch: Dispatch, getState: () => State) => {
+    dispatch(postLoading());
+    dispatch(loadPosts());
     const token = {
       headers: {
         Authorization: getState().auth.token,
@@ -149,6 +155,8 @@ export const likePost =
   };
 export const unlikePost =
   (id: string) => (dispatch: Dispatch, getState: () => State) => {
+    dispatch(postLoading());
+    dispatch(loadPosts());
     const token = {
       headers: {
         Authorization: getState().auth.token,

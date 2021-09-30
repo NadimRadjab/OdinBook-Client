@@ -15,11 +15,28 @@ interface CommentsState {
 }
 
 const initialState: CommentsState = {
-  comments: [] as any,
+  comments: [],
   isLoading: false,
 };
 
-export default function (state = initialState, action: any) {
+interface GetComments {
+  type: "GET_COMMENTS";
+  payload: {}[];
+}
+interface AddComment {
+  type: "ADD_COMMENT";
+  payload: {};
+}
+interface DeleteComment {
+  type: "DELETE_COMMENT";
+  payload: string;
+}
+interface CommentsLoading {
+  type: "COMMENTS_LOADING";
+}
+type Action = GetComments | AddComment | DeleteComment | CommentsLoading;
+
+export default function (state = initialState, action: Action) {
   switch (action.type) {
     case GET_COMMENTS:
       return {

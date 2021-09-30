@@ -19,6 +19,7 @@ import { State } from "../../redux/reducers";
 import Message from "./Message";
 import { uuid } from "uuidv4";
 import styles from "../../styles/chat/ChatBoxStyles";
+import ForwardIcon from "@material-ui/icons/Forward";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 interface Props {
@@ -108,36 +109,33 @@ const ChatBox: React.FC<Props> = ({ classes, chat, handleSocketMessage }) => {
         </div>
         <Divider />
         <List className={classes.list}>
-          {!messages.length ? (
-            <div className="loading">
-              <CircularProgress />
-            </div>
-          ) : (
-            messages
-              .filter(
-                (message: { chatId: string }) => message.chatId === chat._id
-              )
-              .map((message: IMessage) => (
-                <div ref={scrollRef} key={message._id}>
-                  <Message
-                    userIcon={isUser[0].image[0].url}
-                    currentUser={currentUser._id}
-                    key={message._id}
-                    message={message}
-                  />
-                </div>
-              ))
-          )}
+          {!messages.length
+            ? null
+            : messages
+                .filter(
+                  (message: { chatId: string }) => message.chatId === chat._id
+                )
+                .map((message: IMessage) => (
+                  <div ref={scrollRef} key={message._id}>
+                    <Message
+                      userIcon={isUser[0].image[0].url}
+                      currentUser={currentUser._id}
+                      key={message._id}
+                      message={message}
+                    />
+                  </div>
+                ))}
         </List>
       </Paper>
       <div color="primary" className={classes.appBar}>
         <Toolbar>
           <div className={classes.search}>
-            <form onSubmit={handelSubmit}>
+            <form className={classes.forum} onSubmit={handelSubmit}>
               <InputBase
                 multiline
                 onChange={handelChange}
                 onKeyDown={onEnterPress}
+                required
                 placeholder="Message..."
                 value={message}
                 name="message"
@@ -148,7 +146,9 @@ const ChatBox: React.FC<Props> = ({ classes, chat, handleSocketMessage }) => {
                 }}
                 inputProps={{ "aria-label": "Message" }}
               />
-              <button ref={buttonRef} type="submit"></button>
+              <IconButton ref={buttonRef} type="submit">
+                <ForwardIcon />
+              </IconButton>
             </form>
           </div>
           <IconButton
