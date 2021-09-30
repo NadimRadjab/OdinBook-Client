@@ -21,7 +21,7 @@ import styles from "../../styles/navigation/NavbarItemsStyles";
 import ProfileMenu from "./ProfileMenu";
 
 interface Props extends WithStyles<typeof styles> {
-  openDrawer: any;
+  openDrawer: () => void;
   classes: any;
 }
 
@@ -95,7 +95,10 @@ const NavbarItems: FC<Props> = ({ openDrawer, classes }) => {
         <FriendsInvites />
         <p>Invites</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem
+        className={classes.profileMobile}
+        onClick={handleProfileMenuOpen}
+      >
         <ProfileMenu handleLogout={handleLogout} />
         <p>Profile</p>
       </MenuItem>

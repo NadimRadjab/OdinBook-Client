@@ -33,8 +33,8 @@ const styles = createStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     [theme.breakpoints.down("xs")]: {
-      width: 300,
-      height: 300,
+      width: 330,
+      height: 340,
     },
   },
   inputs: {
@@ -46,14 +46,14 @@ const styles = createStyles((theme) => ({
       margin: "0.4rem",
     },
     [theme.breakpoints.down("xs")]: {
-      width: 200,
+      width: 220,
     },
   },
   buttons: {
     display: "flex",
     flexDirection: "column",
     "&& button": {
-      margin: "0.2rem",
+      marginBottom: "1rem",
     },
   },
   alert: {

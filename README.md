@@ -2,7 +2,7 @@
 
 Front-end Repo for OdinBook Project. This is a social media website inspired by Facebook.
 
-[LiveDemo](https://odin-book-client.netlify.app/)
+[Live Demo](https://odin-book-client.netlify.app/)
 
 Visit the OdinBook Back-end repo [here.](https://github.com/NadimRadjab/OdinBook-server)
 
@@ -19,7 +19,7 @@ npm start
 ```
 
 - open .env
-- REACT_APP_URL=Your server Url
+- REACT_APP_URL=Your server url
 - REACT_APP_PORT=Your socket url
 
 ### Made with:
@@ -27,6 +27,8 @@ npm start
 - [TypeScript](https://www.typescriptlang.org/)
 
 - [React](https://reactjs.org/)
+
+- [React Router](https://reactrouter.com/)
 
 - [Redux](https://redux.js.org/)
 
